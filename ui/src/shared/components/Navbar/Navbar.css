@@ -1,0 +1,20 @@
+.navbar {
+	margin-left: 64px;
+	padding: 24px 16px;
+}
+
+.project_name_container {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+
+.project_name {
+	color: var(--textDark);
+	font-family: var(--fontFamilyMedium);
+}
+
+.project_category {
+	color: var(--textLight);
+	font-size: var(--fzSmallest);
+}

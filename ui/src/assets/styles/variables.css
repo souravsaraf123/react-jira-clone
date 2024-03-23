@@ -38,3 +38,12 @@
 	--fontFamilyBold: "CircularStdBold", sans-serif;
 	--fontFamilyBlack: "CircularStdBlack", sans-serif;
 }
+
+:root {
+	--fzRegular: 16px;
+	--fzMedium: 18px;
+	--fzLarge: 20px;
+	--fzLargest: 24px;
+	--fzSmall: 14px;
+	--fzSmallest: 12px;
+}
