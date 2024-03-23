@@ -4,11 +4,37 @@
 :root {
 	/* Basic Colors */
 	--primary: #0052cc; /* Blue */
+	--secondary: #f4f5f7; /* light grey */
 	--success: #0b875b; /* green */
 	--danger: #e13c3c; /* red */
 	--warning: #f89c1c; /* orange */
-	--secondary: #f4f5f7; /* light grey */
+	--ghost: transparent; /* transparent */
+	--light: #f4f5f7; /* light grey */
+	--dark: #1a1a1a; /* Dark grey */
+
+	/* Light Variations */
+	--primaryLight: #005eeb;
+	--secondaryLight: #e1e3e6;
+	--successLight: #0a7d48;
+	--dangerLight: #c93232;
+	--warningLight: #d9822b;
+	--ghostLight: #ebecf0;
+	--lightLight: #e1e3e6;
+	--darkLight: #2d2d2d;
+
+	/* Dark Variations */
+	--primaryDark: #004bb7;
+	--secondaryDark: #d0d2d6;
+	--successDark: #086f42;
+	--dangerDark: #b22a2a;
+	--warningDark: #c77b1f;
+	--ghostDark: #dfe1e6;
+	--lightDark: #d0d2d6;
+	--darkDark: #333333;
+
+	/* Grayscale */
 	--white: #ffffff;
+	--black: #000000;
 
 	/* Text Colors */
 	--textDarkest: #172b4d;
@@ -40,10 +66,10 @@
 }
 
 :root {
-	--fzRegular: 16px;
-	--fzMedium: 18px;
-	--fzLarge: 20px;
-	--fzLargest: 24px;
-	--fzSmall: 14px;
-	--fzSmallest: 12px;
+	--fzSmallest: 0.75rem;
+	--fzSmall: 0.875rem;
+	--fzRegular: 1rem;
+	--fzMedium: 1.125rem;
+	--fzLarge: 1.25rem;
+	--fzLargest: 1.5rem;
 }

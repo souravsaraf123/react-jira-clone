@@ -1,0 +1,17 @@
+.button_row_container {
+	flex-grow: 1;
+	display: grid;
+	align-items: start;
+	justify-items: start;
+	gap: 1rem;
+}
+
+.button_row {
+	margin-left: 64px;
+	flex-grow: 1;
+	display: flex;
+	align-items: end;
+	gap: 1rem;
+	flex-wrap: nowrap;
+	padding: 1rem;
+}

@@ -1,0 +1,31 @@
+.btn {
+	--hoverBackgroundColor: var(--primaryLight);
+	--activeBackgroundColor: var(--primaryDark);
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	height: min-content;
+
+	border-style: solid;
+	border-width: 1px;
+
+	&:disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	&:not([disabled]):hover {
+		background-color: var(--hoverBackgroundColor) !important;
+	}
+
+	&:not([disabled]):active {
+		background-color: var(--activeBackgroundColor) !important;
+	}
+
+	&:not([disabled]):focus-visible {
+		outline-offset: 4px;
+		outline-color: var(--primaryLight);
+	}
+}
