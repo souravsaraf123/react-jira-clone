@@ -39,7 +39,7 @@ body {
 		overflow-y: auto;
 	}
 
-	& > *:last-child() {
-		flex: 1;
+	main {
+		flex-grow: 1;
 	}
 }

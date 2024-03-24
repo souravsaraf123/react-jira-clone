@@ -1,12 +1,17 @@
 .navbar {
 	width: 230px;
 	padding: 24px 16px;
+	display: grid;
+	align-content: start;
+	background-color: var(--light);
+	border-right: 1px solid var(--ghostDark);
 }
 
 .project_name_container {
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
+	padding-bottom: 1.5em;
 }
 
 .project_name {
@@ -17,4 +22,40 @@
 .project_category {
 	color: var(--textLight);
 	font-size: var(--fzSmallest);
+}
+
+.nav_link_button {
+	padding: 8px 12px !important;
+	justify-content: flex-start !important;
+
+	&.not_implemented {
+		opacity: 1 !important;
+		pointer-events: all !important;
+
+		& > span {
+			display: none;
+			content: attr(data-tooltip);
+			color: var(--textDark);
+			background-color: var(--ghostDark);
+			font-family: var(--fontFamilyBold);
+			font-size: 12px;
+			padding: 0.25em 0.5em;
+		}
+
+		&:hover {
+			cursor: not-allowed;
+			& > p {
+				display: none;
+			}
+
+			& > span {
+				display: inline;
+			}
+		}
+	}
+}
+
+.nav_separator {
+	margin: 1em 0;
+	border-bottom: 1px solid var(--ghostDark);
 }

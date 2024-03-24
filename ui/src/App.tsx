@@ -1,5 +1,5 @@
-import { ButtonShowcase } from "./pages/ButtonShowcase/ButtonShowcase";
 import { Navbar } from "./shared/components/Navbar/Navbar";
+import { Outlet } from "react-router-dom";
 import { Sidebar } from "./shared/components/Sidebar/Sidebar";
 
 function App()
@@ -8,7 +8,9 @@ function App()
 		<>
 			<Sidebar />
 			<Navbar />
-			<ButtonShowcase />
+			<main>
+				<Outlet />
+			</main>
 		</>
 	);
 }

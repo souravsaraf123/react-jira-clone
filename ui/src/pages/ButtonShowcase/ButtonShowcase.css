@@ -1,5 +1,4 @@
 .button_row_container {
-	flex-grow: 1;
 	display: grid;
 	align-items: start;
 	justify-items: start;
