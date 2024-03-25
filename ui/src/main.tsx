@@ -3,7 +3,7 @@ import './assets/styles/variables.css';
 import './assets/styles/reset.css';
 import './assets/styles/index.css';
 
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import App from './App.tsx';
 import { Board } from './pages/Board/Board.tsx';
@@ -20,9 +20,12 @@ const router = createBrowserRouter([
 		errorElement: <ErrorPage />,
 		children: [
 			{
+				index: true,
+				element: <Navigate to="showcase" />,
+			},
+			{
 				path: "showcase",
 				element: <ButtonShowcase />,
-				index: true,
 			},
 			{
 				path: "board",
