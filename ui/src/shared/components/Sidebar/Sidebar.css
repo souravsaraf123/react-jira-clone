@@ -1,45 +1,63 @@
 aside {
-	width: 64px;
-	position: relative;
-}
+	height: 100%;
 
-.sidebar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: calc(100vw - 64px);
+
 	background-color: var(--backgroundDarkPrimary);
 	color: var(--white);
 	padding-block: 1em;
 
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: flex-start;
 
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
 	overflow-y: auto;
+	overflow-x: hidden;
 
-	& > * {
-		width: 100%;
-		padding-block: 0.5em;
+	& span {
+		text-transform: uppercase;
+		font-family: "CircularStdBold";
+		font-size: var(--fzSmallest);
+		visibility: hidden;
+	}
 
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.1);
+	&:hover {
+		right: calc(100vw - 200px);
+		transition-property: all;
+		transition-duration: 100ms;
+		transition-timing-function: ease;
+
+		span {
+			visibility: visible;
 		}
-	}
-
-	& > *:first-child {
-		margin-bottom: 0.5em;
-	}
-
-	& > *:last-child {
-		margin-top: auto;
 	}
 }
 
 button.sidebar_button {
+	width: 200px;
+	overflow-x: clip;
+	justify-content: flex-start;
+	flex-wrap: nowrap;
+	padding-block: 0.5em;
 	border: none;
+
+	&:first-child {
+		margin-bottom: 0.5em;
+	}
+
+	&:last-child {
+		margin-top: auto;
+	}
+
+	& > svg {
+		flex-shrink: 0;
+		min-width: 28px !important;
+	}
+
 	&:not([disabled]):hover {
 		background-color: rgba(255, 255, 255, 0.1) !important;
 	}

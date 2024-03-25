@@ -28,36 +28,37 @@ export function Sidebar()
 
 	return (
 		<aside>
-			<div className="sidebar">
 
-				{/* Home */}
-				<Button
-					{...props}
-					onClick={() => alert("Home")}>
-					<SVG src={homeIcon} height={32} width={32} />
-				</Button>
+			{/* Home */}
+			<Button
+				{...props}
+				onClick={() => alert("Home")}>
+				<SVG src={homeIcon} height={32} width={32} />
+			</Button>
 
-				{/* Search */}
-				<Button
-					{...props}
-					onClick={() => alert("Search")}>
-					<SVG src={searchIcon} height={height} width={width} />
-				</Button>
+			{/* Search */}
+			<Button
+				{...props}
+				onClick={() => alert("Search")}>
+				<SVG src={searchIcon} height={height} width={width} />
+				<span>SEARCH ISSUES</span>
+			</Button>
 
-				{/* New Issue */}
-				<Button
-					{...props}
-					onClick={() => alert("New Issue")}>
-					<SVG src={plusIcon} height={height} width={width} />
-				</Button>
+			{/* New Issue */}
+			<Button
+				{...props}
+				onClick={() => alert("New Issue")}>
+				<SVG src={plusIcon} height={height} width={width} />
+				<span>CREATE ISSUE</span>
+			</Button>
 
-				{/* Help */}
-				<Button
-					{...props}
-					onClick={() => alert("Help")}>
-					<SVG src={helpIcon} height={height} width={width} />
-				</Button>
-			</div>
+			{/* Help */}
+			<Button
+				{...props}
+				onClick={() => alert("Help")}>
+				<SVG src={helpIcon} height={height} width={width} />
+				<span>ABOUT</span>
+			</Button>
 		</aside>
 	);
 }
