@@ -2,11 +2,14 @@ import "./Sidebar.css";
 
 import { Button, ButtonFilled, ButtonPalette, ButtonProps, ButtonSize } from "../Button/Button";
 
-import { IconButton } from "../IconButton";
+import { About } from "./About/About";
+import { Popover } from 'react-tiny-popover';
 import SVG from 'react-inlinesvg';
+import { useState } from "react";
 
 export function Sidebar()
 {
+	let [isPopoverOpen, setIsPopoverOpen] = useState(false);
 	let homeIcon = "src/assets/images/jira_light.svg";
 	let searchIcon = "src/assets/images/search.svg";
 	let plusIcon = "src/assets/images/plus.svg";
@@ -53,12 +56,21 @@ export function Sidebar()
 			</Button>
 
 			{/* Help */}
-			<Button
-				{...props}
-				onClick={() => alert("Help")}>
-				<SVG src={helpIcon} height={height} width={width} />
-				<span>ABOUT</span>
-			</Button>
+			<Popover
+				isOpen={isPopoverOpen}
+				onClickOutside={() => setIsPopoverOpen(false)}
+				positions={['right']}
+				align="end"
+				padding={10}
+				content={<About />}>
+				<Button
+					onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+					{...props}>
+					<SVG src={helpIcon} height={height} width={width} />
+					<span>ABOUT</span>
+				</Button>
+			</Popover>
+
 		</aside>
 	);
 }

@@ -1,5 +1,6 @@
 import "./Button.css";
 
+import { forwardRef } from "react";
 import tinycolor from "tinycolor2";
 
 export enum ButtonPalette
@@ -39,7 +40,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 	filled?: ButtonFilled;
 }
 
-export function Button(props: ButtonProps)
+export const Button = forwardRef((props: ButtonProps, ref?: React.Ref<HTMLButtonElement>) => 
 {
 	const {
 		children,
@@ -121,5 +122,5 @@ export function Button(props: ButtonProps)
 	let finalClasses = 'btn ' + (className || '');
 	let finalStyles = { ...styleViaProps, ...style };
 
-	return <button className={finalClasses} style={finalStyles} {...htmlButtonProps}>{children}</button>;
-}
+	return <button className={finalClasses} style={finalStyles} {...htmlButtonProps} ref={ref}>{children}</button>;
+});
