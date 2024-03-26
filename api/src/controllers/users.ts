@@ -1,5 +1,6 @@
 import { catchErrors } from 'errors';
 
-export const getCurrentUser = catchErrors((req, res) => {
-  res.respond({ currentUser: req.currentUser });
+export const getCurrentUser = catchErrors((req: any, res: any) =>
+{
+	res.respond({ currentUser: req.currentUser });
 });
