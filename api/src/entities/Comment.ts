@@ -1,14 +1,15 @@
-import {
-  BaseEntity,
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-} from 'typeorm';
+import
+	{
+		BaseEntity,
+		Entity,
+		Column,
+		PrimaryGeneratedColumn,
+		CreateDateColumn,
+		UpdateDateColumn,
+		ManyToOne,
+	} from 'typeorm';
 
-import is from 'utils/validation';
+import is from './../utils/validation';
 import { Issue, User } from '.';
 
 @Entity()

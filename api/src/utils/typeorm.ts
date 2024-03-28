@@ -1,8 +1,9 @@
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
-import { Project, User, Issue, Comment } from 'entities';
-import { EntityNotFoundError, BadUserInputError } from 'errors';
-import { generateErrors } from 'utils/validation';
+import { Project, User, Issue, Comment } from './../entities';
+import { EntityNotFoundError, BadUserInputError } from './../errors';
+import { generateErrors } from './../utils/validation';
+import { FindManyOptions } from 'typeorm';
 
 type EntityConstructor = typeof Project | typeof User | typeof Issue | typeof Comment;
 type EntityInstance = Project | User | Issue | Comment;
@@ -14,7 +15,11 @@ export const findEntityOrThrow = async <T extends EntityConstructor>(
   id: number | string,
   options?: FindOneOptions,
 ): Promise<InstanceType<T>> => {
-  const instance = await Constructor.findOne(id, options);
+	let condition: FindManyOptions = {
+		where: { id },
+		...options,
+	};
+  const [instance] = await Constructor.find(condition);
   if (!instance) {
     throw new EntityNotFoundError(Constructor.name);
   }
@@ -38,7 +43,7 @@ export const createEntity = async <T extends EntityConstructor>(
   Constructor: T,
   input: Partial<InstanceType<T>>,
 ): Promise<InstanceType<T>> => {
-  const instance = Constructor.create(input);
+	let instance = Constructor.create.bind(Constructor)(input);
   return validateAndSaveEntity(instance as InstanceType<T>);
 };
 

@@ -1,8 +1,8 @@
-import { findEntityOrThrow, updateEntity } from 'utils/typeorm';
+import { findEntityOrThrow, updateEntity } from './../utils/typeorm';
 
-import { Project } from 'entities';
-import { catchErrors } from 'errors';
-import { issuePartial } from 'serializers/issues';
+import { Project } from './../entities/index';
+import { catchErrors } from './../errors/index';
+import { issuePartial } from './../serializers/issues';
 
 export const getProjectWithUsersAndIssues = catchErrors(async (req: any, res: any) =>
 {

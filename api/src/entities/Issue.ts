@@ -1,23 +1,24 @@
 import striptags from 'striptags';
-import {
-  BaseEntity,
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
-  RelationId,
-  BeforeUpdate,
-  BeforeInsert,
-} from 'typeorm';
+import
+	{
+		BaseEntity,
+		Entity,
+		Column,
+		PrimaryGeneratedColumn,
+		CreateDateColumn,
+		UpdateDateColumn,
+		ManyToOne,
+		OneToMany,
+		ManyToMany,
+		JoinTable,
+		RelationId,
+		BeforeUpdate,
+		BeforeInsert,
+	} from 'typeorm';
 
-import is from 'utils/validation';
-import { IssueType, IssueStatus, IssuePriority } from 'constants/issues';
-import { Comment, Project, User } from '.';
+import is from './../utils/validation';
+import { IssueType, IssueStatus, IssuePriority } from './../constants/issues';
+import { Comment, Project, User } from './index';
 
 @Entity()
 class Issue extends BaseEntity {

@@ -1,16 +1,15 @@
-import 'module-alias/register';
 import 'dotenv/config';
 import 'reflect-metadata';
 
 import { attachPrivateRoutes, attachPublicRoutes } from './routes';
 
-import { RouteNotFoundError } from 'errors';
-import { addRespondToResponse } from 'middleware/response';
-import { authenticateUser } from 'middleware/authentication';
+import { RouteNotFoundError } from './errors/index';
+import { addRespondToResponse } from './middleware/response';
+import { authenticateUser } from './middleware/authentication';
 import cors from 'cors';
 import { createConnection } from 'typeorm';
 import express from 'express';
-import { handleError } from 'middleware/errors';
+import { handleError } from './middleware/errors';
 
 const establishDatabaseConnection = async (): Promise<void> =>
 {

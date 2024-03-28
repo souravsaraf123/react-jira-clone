@@ -1,8 +1,8 @@
-import { InvalidTokenError, catchErrors } from 'errors';
+import { InvalidTokenError, catchErrors } from './../errors/index';
 
 import { Request } from 'express';
-import { User } from 'entities';
-import { verifyToken } from 'utils/authToken';
+import { User } from './../entities/index';
+import { verifyToken } from './../utils/authToken';
 
 export const authenticateUser = catchErrors(async (req: any, _res, next) =>
 {

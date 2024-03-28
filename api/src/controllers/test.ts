@@ -1,7 +1,7 @@
-import { catchErrors } from 'errors';
-import createTestAccount from 'database/createTestAccount';
-import resetTestDatabase from 'database/resetDatabase';
-import { signToken } from 'utils/authToken';
+import { catchErrors } from './../errors';
+import createTestAccount from './../database/createTestAccount';
+import resetTestDatabase from './../database/resetDatabase';
+import { signToken } from './../utils/authToken';
 
 export const resetDatabase = catchErrors(async (_req, res: any) =>
 {

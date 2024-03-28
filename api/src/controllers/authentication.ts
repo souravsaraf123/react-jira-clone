@@ -1,6 +1,6 @@
-import { catchErrors } from 'errors';
-import createAccount from 'database/createGuestAccount';
-import { signToken } from 'utils/authToken';
+import { catchErrors } from './../errors';
+import createAccount from './../database/createGuestAccount';
+import { signToken } from './../utils/authToken';
 
 export const createGuestAccount = catchErrors(async (_req: any, res: any) =>
 {

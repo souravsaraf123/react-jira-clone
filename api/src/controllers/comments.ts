@@ -1,7 +1,7 @@
-import { createEntity, deleteEntity, updateEntity } from 'utils/typeorm';
+import { createEntity, deleteEntity, updateEntity } from './../utils/typeorm';
 
-import { Comment } from 'entities';
-import { catchErrors } from 'errors';
+import { Comment } from './../entities/index';
+import { catchErrors } from './../errors/index';
 
 export const create = catchErrors(async (req, res: any) =>
 {

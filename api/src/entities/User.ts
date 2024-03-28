@@ -1,17 +1,18 @@
-import {
-  BaseEntity,
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  ManyToMany,
-  ManyToOne,
-  RelationId,
-} from 'typeorm';
+import
+	{
+		BaseEntity,
+		Entity,
+		Column,
+		PrimaryGeneratedColumn,
+		CreateDateColumn,
+		UpdateDateColumn,
+		OneToMany,
+		ManyToMany,
+		ManyToOne,
+		RelationId,
+	} from 'typeorm';
 
-import is from 'utils/validation';
+import is from './../utils/validation';
 import { Comment, Issue, Project } from '.';
 
 @Entity()
