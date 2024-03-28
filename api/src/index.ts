@@ -7,7 +7,7 @@ import { RouteNotFoundError } from './errors/index';
 import { addRespondToResponse } from './middleware/response';
 import { authenticateUser } from './middleware/authentication';
 import cors from 'cors';
-import { createConnection } from 'typeorm';
+import createDatabaseConnection from './database/createConnection';
 import express from 'express';
 import { handleError } from './middleware/errors';
 
@@ -15,26 +15,12 @@ const establishDatabaseConnection = async (): Promise<void> =>
 {
 	try
 	{
-		console.log('Establishing database connection');
-		console.log('DB_HOST:', process.env.DB_HOST);
-		console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-		let conn = await createConnection({
-			type: 'postgres',
-			host: process.env.DB_HOST,
-			port: Number(process.env.DB_PORT),
-			username: process.env.DB_USERNAME,
-			password: process.env.DB_PASSWORD,
-			database: process.env.DB_DATABASE,
-			entities: [],
-			synchronize: true,
-		});
-		console.log(`Connected to ${conn.options.type} database`);
-		let result = await conn.query('SELECT 1');
-		console.log('Result:', result);
+		await createDatabaseConnection();
 	}
 	catch (error)
 	{
 		console.log(error);
+		throw error;
 	}
 };
 
