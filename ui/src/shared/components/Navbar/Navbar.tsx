@@ -2,14 +2,16 @@ import "./Navbar.css";
 
 import { Button, ButtonFilled, ButtonPalette } from "../Button/Button";
 
+import { Project } from "../../models/project.model";
 import SVG from "react-inlinesvg";
 import { useNavigate } from "react-router-dom";
 
-export function Navbar()
+export function Navbar(props: { project: Project })
 {
 	let navigate = useNavigate();
-	let projectName = "singularity 1.0";
-	let projectCategory = "Software project";
+	let projectName = props?.project?.name;
+	let category = props?.project?.category;
+	let projectCategory = category?.charAt(0)?.toUpperCase() + category?.substring(1) + " project";
 	let projectIcon = "src/assets/images/project_icon.svg";
 
 	function navigateTo(url: string)
@@ -34,10 +36,6 @@ export function Navbar()
 			icon: "src/assets/images/reports.svg",
 			text: "Reports"
 		},
-		{
-			icon: "src/assets/images/components.svg",
-			text: "Components"
-		}
 	];
 
 	let notImplemented = notImplementedLinks.map(l =>
@@ -89,6 +87,17 @@ export function Navbar()
 			<div className="nav_separator"></div>
 
 			{notImplemented}
+
+			{/* Components */}
+			<Button
+				className="nav_link_button"
+				filled={ButtonFilled.filled}
+				palette={ButtonPalette.ghost}
+				onClick={() => navigateTo("/showcase")}
+			>
+				<SVG src="src/assets/images/components.svg" width={24} height={24} />
+				<p>Components</p>
+			</Button>
 
 		</nav>
 	);

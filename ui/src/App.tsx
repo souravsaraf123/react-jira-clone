@@ -17,12 +17,16 @@ function App()
 		let init = async () =>
 		{
 			// check if user and token are already present in local storage
-			let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("currentUser")) as User : null;
+			let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) as User : null;
 			let token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
+
+			console.log('User from localstorage : ', user);
+			console.log('Token from localstorage : ', token);
 
 			// if user or token is not present, seed data and get user, token in response, store the user and token in local storage
 			if (!user || !token)
 			{
+				console.log('Seeding data');
 				try
 				{
 					let loginResponse = await seedData();
@@ -35,6 +39,8 @@ function App()
 				{
 					console.error('Error while seeding data : ', error);
 					alert('Error while seeding data');
+					setError(error);
+					setIsLoading(false);
 					return;
 				}
 			}
@@ -42,13 +48,18 @@ function App()
 			// fetch project details
 			try
 			{
+				console.time('getProjectDetails');
 				let projectDetails = await getProjectDetails(token);
+				console.timeEnd('getProjectDetails');
 				setProjectDetails(projectDetails);
+				setIsLoading(false);
 			}
 			catch (error)
 			{
 				console.error('Error while fetching project details : ', error);
 				alert('Error while fetching project details');
+				setError(error);
+				setIsLoading(false);
 				return;
 			}
 		};
@@ -59,17 +70,41 @@ function App()
 	}, []);
 
 	let ref = useRef(0);
+	let [isLoading, setIsLoading] = useState<boolean>(true);
+	let [error, setError] = useState<any>(null);
 	let [projectDetails, setProjectDetails] = useState<ProjectDetails>(null);
 
 	ref.current = ref.current + 1;
 	console.log(`App component re-rendered ${ref.current} times`);
-	return (
+
+	let loadingState = (
+		<div className="center_of_body">
+			<h1>Loading...</h1>
+		</div>
+	);
+
+	let errorState = (
+		<div className="center_of_body">
+			<h1>Error</h1>
+			<br />
+			<p>{error?.message || JSON.stringify(error, null, 4)}</p>
+		</div>
+	);
+
+	let successState = (
 		<>
 			<Sidebar />
-			<Navbar />
+			<Navbar project={projectDetails?.project} />
 			<main>
 				<Outlet />
 			</main>
+		</>
+	);
+
+	let finalState = isLoading ? loadingState : error ? errorState : successState;
+	return (
+		<>
+			{finalState}
 		</>
 	);
 }
