@@ -1,6 +1,13 @@
 import { Issue } from "./issue.model";
 import { User } from "./user.model";
 
+export enum ProjectCategory
+{
+	software = 'software',
+	marketing = 'marketing',
+	business = 'business',
+}
+
 export interface Project
 {
 	id: number,
@@ -10,13 +17,11 @@ export interface Project
 	category: ProjectCategory,
 	createdAt: string,
 	updatedAt: string,
-	users: User[],
-	issues: Issue[],
 }
 
-export enum ProjectCategory
+export interface ProjectDetails
 {
-	software = 'software',
-	marketing = 'marketing',
-	business = 'business',
+	project: Project,
+	users: User[],
+	issues: Issue[],
 }

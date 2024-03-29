@@ -1,8 +1,8 @@
-import { GUEST_EMAIL } from './../constants/user';
-import User from './../entities/User';
-import { catchErrors } from './../errors';
-import createAccount from './../database/createGuestAccount';
-import { signToken } from './../utils/authToken';
+import { GUEST_EMAIL } from '../constants/user';
+import User from '../entities/User';
+import { catchErrors } from '../errors';
+import createAccount from '../database/createGuestAccount';
+import { signToken } from '../utils/authToken';
 
 export const createGuestAccount = catchErrors(async (_req: any, res: any) =>
 {
@@ -13,8 +13,9 @@ export const createGuestAccount = catchErrors(async (_req: any, res: any) =>
 	if (guestUser)
 	{
 		res.respond({
+			user: guestUser,
 			msg: 'Guest user already exists',
-			authToken: signToken({ sub: guestUser.id }),
+			token: signToken({ sub: guestUser.id }),
 		});
 		return;
 	}
@@ -23,7 +24,7 @@ export const createGuestAccount = catchErrors(async (_req: any, res: any) =>
 	const user = await createAccount();
 	res.respond({
 		msg: 'Seed data created successfully',
-		currentUser: user,
-		authToken: signToken({ sub: user.id }),
+		user: user,
+		token: signToken({ sub: user.id }),
 	});
 });

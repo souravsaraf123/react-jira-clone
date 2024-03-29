@@ -1,0 +1,60 @@
+{
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"javascript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+	"javascript.format.placeOpenBraceOnNewLineForFunctions": true,
+	"typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+	"typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+	"editor.detectIndentation": false,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"[javascript]": {
+		"editor.codeActionsOnSave": {
+			"source.addMissingImports": "always",
+			"source.removeUnusedImports": "always"
+		}
+	},
+	"[typescript]": {
+		"editor.codeActionsOnSave": {
+			"source.addMissingImports": "always",
+			"source.removeUnusedImports": "always"
+		}
+	},
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/www": true,
+		"**/dist": true,
+		"**/build": true,
+		"**/.build": true,
+		"**/.angular": true,
+	},
+	"files.exclude": {
+		".build/**": true,
+		"dist/**": true,
+		"www/**": true
+	},
+	"files.refactoring.autoSave": false,
+	"editor.renderWhitespace": "none",
+	"editor.suggestSelection": "first",
+	"editor.largeFileOptimizations": false,
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"editor.formatOnPaste": false,
+	"editor.formatOnSave": true,
+	"editor.unicodeHighlight.ambiguousCharacters": true,
+	"editor.formatOnType": false,
+	"workbench.startupEditor": "none",
+	"[scss]": {
+		"editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
+	},
+	"sort-imports.on-save": true,
+	"[css]": {
+		"editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
+	},
+	"html.format.indentInnerHtml": true,
+	"emmet.preferences": {
+		"output.inlineBreak": 1
+	},
+	"editor.stickyScroll.scrollWithEditor": false,
+	"workbench.tree.enableStickyScroll": false,
+	"editor.stickyScroll.enabled": false
+}

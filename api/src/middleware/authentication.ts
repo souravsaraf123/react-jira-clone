@@ -18,7 +18,9 @@ export const authenticateUser = catchErrors(async (req: any, _res, next) =>
 	{
 		throw new InvalidTokenError('Authentication token is invalid.');
 	}
-	const user = await User.findOne(userId);
+	const user = await User.findOne({
+		where: { id: userId },
+	});
 	if (!user)
 	{
 		throw new InvalidTokenError('Authentication token is invalid: User not found.');

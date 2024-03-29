@@ -8,3 +8,9 @@ export interface User
 	updatedAt: string,
 	projectId: number,
 }
+
+export interface LoginResponse
+{
+	user: User,
+	token: string,
+}

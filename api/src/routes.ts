@@ -1,4 +1,4 @@
-import * as authentication from './controllers/authentication';
+import * as authentication from './controllers/seedData';
 import * as comments from './controllers/comments';
 import * as issues from './controllers/issues';
 import * as projects from './controllers/projects';
