@@ -1,5 +1,6 @@
 import "./About.css";
 
+import { GithubLink } from "../../../GithubLink/GithubLink";
 import SVG from 'react-inlinesvg';
 
 export function About()
@@ -16,10 +17,7 @@ export function About()
 
 			<div className="links">
 				<a className="primary" target="_blank" href="https://www.linkedin.com/in/sourav-saraf-a8a33752">LinkedIn</a>
-				<a className="secondary" target="_blank" href="https://github.com/souravsaraf123/react-jira-clone">
-					<SVG src="src/assets/images/github.svg" width={16} height={16}></SVG>
-					<span>Github Repo</span>
-				</a>
+				<GithubLink />
 			</div>
 		</div>
 	);

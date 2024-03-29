@@ -1,0 +1,17 @@
+.github {
+	font-family: var(--fontFamilyMedium);
+	padding: 4px 12px;
+
+	display: inline-flex;
+	gap: 6px;
+	align-items: center;
+	justify-content: center;
+
+	background-color: var(--secondary);
+	color: var(--textDark);
+	border-radius: 4px;
+
+	&:hover {
+		background-color: var(--secondaryLight);
+	}
+}

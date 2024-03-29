@@ -1,14 +1,12 @@
-import { delay, handleApiError } from '../utils';
-
 import { Constants } from '../Constants';
 import { ProjectDetails } from '../models/project.model';
 import axios from 'axios';
+import { handleApiError } from '../utils';
 
 export async function getProjectDetails(token: string)
 {
 	try
 	{
-		await delay(3000);
 		let response = await axios.get(`${Constants.API_URL}/project`, {
 			headers: {
 				"Content-Type": "application/json",

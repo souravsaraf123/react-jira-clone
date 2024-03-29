@@ -4,6 +4,7 @@ import { Navbar } from "./shared/components/Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import { ProjectDetails } from "./shared/models/project.model";
 import { Sidebar } from "./shared/components/Sidebar/Sidebar";
+import { Spinner } from "./shared/components/Spinner/Spinner";
 import { User } from "./shared/models/user.model";
 import { getProjectDetails } from "./shared/services/Project.service";
 import { seedData } from "./shared/services/Auth.service";
@@ -79,7 +80,7 @@ function App()
 
 	let loadingState = (
 		<div className="center_of_body">
-			<h1>Loading...</h1>
+			<Spinner height={70} width={70} />
 		</div>
 	);
 
