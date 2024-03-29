@@ -1,7 +1,7 @@
 import { Comment, Issue, Project, User } from './../entities';
 import { IssuePriority, IssueStatus, IssueType } from './../constants/issues';
 
-import { GUEST_EMAIL } from 'constants/user';
+import { GUEST_EMAIL } from './../constants/user';
 import { ProjectCategory } from './../constants/projects';
 import { createEntity } from './../utils/typeorm';
 
