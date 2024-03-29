@@ -6,6 +6,8 @@ import { verifyToken } from './../utils/authToken';
 
 export const authenticateUser = catchErrors(async (req: any, _res, next) =>
 {
+	console.log('Authenticating user');
+
 	const token = getAuthTokenFromRequest(req);
 	if (!token)
 	{

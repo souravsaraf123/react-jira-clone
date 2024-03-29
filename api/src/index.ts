@@ -10,6 +10,7 @@ import cors from 'cors';
 import createDatabaseConnection from './database/createConnection';
 import express from 'express';
 import { handleError } from './middleware/errors';
+import requestLoggerMiddleware from './middleware/requestLogger';
 
 const establishDatabaseConnection = async (): Promise<void> =>
 {
@@ -32,6 +33,7 @@ const initializeExpress = (): void =>
 	app.use(cors());
 	app.use(express.json());
 	app.use(express.urlencoded());
+	app.use(requestLoggerMiddleware);
 
 	app.use(addRespondToResponse);
 

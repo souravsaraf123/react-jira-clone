@@ -1,0 +1,1 @@
+export const GUEST_EMAIL = 'rick@jira.guest';
