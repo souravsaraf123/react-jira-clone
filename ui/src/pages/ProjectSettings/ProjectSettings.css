@@ -1,0 +1,18 @@
+.project_settings_form {
+	margin-inline: auto;
+	width: 100%;
+	max-width: 640px;
+
+	.title {
+		padding: 8px 0px 16px 0px;
+	}
+
+	& label {
+		display: block;
+		margin-top: 20px;
+	}
+
+	.project_settings_save_button {
+		margin-top: 20px;
+	}
+}

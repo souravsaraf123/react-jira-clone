@@ -2,7 +2,11 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: flex-start;
-	gap: 4px;
+	gap: 6px;
 	color: var(--textMedium);
 	font-size: var(--fzSmall);
+
+	& > *:nth-child(2n) {
+		font-size: var(--fzMedium);
+	}
 }

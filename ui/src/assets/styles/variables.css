@@ -3,58 +3,58 @@
 /* Colors */
 :root {
 	/* Basic Colors */
-	--primary: #0052cc; /* Blue */
-	--secondary: #f4f5f7; /* light grey */
-	--success: #0b875b; /* green */
-	--danger: #e13c3c; /* red */
-	--warning: #f89c1c; /* orange */
+	--primary: rgb(0, 82, 204); /* Blue */
+	--secondary: rgb(244, 245, 247); /* light grey */
+	--success: rgb(11, 135, 91); /* green */
+	--danger: rgb(225, 60, 60); /* red */
+	--warning: rgb(248, 156, 28); /* orange */
 	--ghost: transparent; /* transparent */
-	--light: #f4f5f7; /* light grey */
-	--dark: #1a1a1a; /* Dark grey */
+	--light: rgb(244, 245, 247); /* light grey */
+	--dark: rgb(26, 26, 26); /* Dark grey */
 
 	/* Light Variations */
-	--primaryLight: #005eeb;
-	--secondaryLight: #ebecf0;
-	--successLight: #0a7d48;
-	--dangerLight: #c93232;
-	--warningLight: #d9822b;
-	--ghostLight: #ebecf0;
-	--lightLight: #e1e3e6;
-	--darkLight: #2d2d2d;
+	--primaryLight: rgb(0, 94, 235);
+	--secondaryLight: rgb(235, 236, 240);
+	--successLight: rgb(10, 125, 72);
+	--dangerLight: rgb(201, 50, 50);
+	--warningLight: rgb(216, 130, 43);
+	--ghostLight: rgb(235, 236, 240);
+	--lightLight: rgb(225, 227, 230);
+	--darkLight: rgb(45, 45, 45);
 
 	/* Dark Variations */
-	--primaryDark: #004bb7;
-	--secondaryDark: #d0d2d6;
-	--successDark: #086f42;
-	--dangerDark: #b22a2a;
-	--warningDark: #c77b1f;
-	--ghostDark: #dfe1e6;
-	--lightDark: #d0d2d6;
-	--darkDark: #333333;
+	--primaryDark: rgb(0, 75, 183);
+	--secondaryDark: rgb(208, 210, 214);
+	--successDark: rgb(8, 111, 66);
+	--dangerDark: rgb(178, 42, 42);
+	--warningDark: rgb(199, 123, 31);
+	--ghostDark: rgb(223, 225, 230);
+	--lightDark: rgb(208, 210, 214);
+	--darkDark: rgb(51, 51, 51);
 
 	/* Grayscale */
-	--white: #ffffff;
-	--black: #000000;
+	--white: rgb(255, 255, 255);
+	--black: rgb(0, 0, 0);
 
 	/* Text Colors */
-	--textDarkest: #172b4d;
-	--textDark: #42526e;
-	--textMedium: #5e6c84;
-	--textLight: #8993a4;
-	--textLink: #0052cc;
+	--textDarkest: rgb(23, 43, 77);
+	--textDark: rgb(66, 82, 110);
+	--textMedium: rgb(94, 108, 132);
+	--textLight: rgb(137, 147, 164);
+	--textLink: rgb(0, 82, 204);
 
 	/* Background Colors */
-	--backgroundDarkPrimary: #0747a6;
-	--backgroundMedium: #dfe1e6;
-	--backgroundLight: #ebecf0;
-	--backgroundLightest: #f4f5f7;
-	--backgroundLightPrimary: #d2e5fe;
-	--backgroundLightSuccess: #e4fcef;
+	--backgroundDarkPrimary: rgb(7, 71, 166);
+	--backgroundMedium: rgb(223, 225, 230);
+	--backgroundLight: rgb(235, 236, 240);
+	--backgroundLightest: rgb(244, 245, 247);
+	--backgroundLightPrimary: rgb(210, 229, 254);
+	--backgroundLightSuccess: rgb(228, 252, 239);
 
 	/* Border Colors */
-	--borderLightest: #dfe1e6;
-	--borderLight: #c1c7d0;
-	--borderInputFocus: #4c9aff;
+	--borderLightest: rgb(223, 225, 230);
+	--borderLight: rgb(193, 199, 208);
+	--borderInputFocus: rgb(76, 154, 255);
 }
 
 /* Fonts */

@@ -84,7 +84,7 @@ function App()
 
 	let loadingState = (
 		<div className="center_of_body">
-			<Spinner height={70} width={70} />
+			<Spinner height={70} width={70} variation="dark" />
 		</div>
 	);
 
