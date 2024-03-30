@@ -1,14 +1,13 @@
 import { Project, ProjectDetails } from '../models/project.model';
-import { delay, handleApiError } from '../utils';
 
 import { Constants } from '../Constants';
 import axios from 'axios';
+import { handleApiError } from '../utils';
 
 export async function getProjectDetails(token: string)
 {
 	try
 	{
-		await delay(10000);
 		let response = await axios.get(`${Constants.API_URL}/project`, {
 			headers: {
 				"Content-Type": "application/json",
@@ -38,7 +37,6 @@ export async function updateProject(token: string, project: Project)
 {
 	try
 	{
-		await delay(5000);
 		let response = await axios.put(`${Constants.API_URL}/project`, project, {
 			headers: {
 				"Content-Type": "application/json",
