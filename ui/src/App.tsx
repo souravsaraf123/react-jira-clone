@@ -1,13 +1,15 @@
+import { Project, ProjectDetails } from "./shared/models/project.model";
 import { useEffect, useRef, useState } from "react";
 
 import { Navbar } from "./shared/components/Navbar/Navbar";
 import { Outlet } from "react-router-dom";
-import { ProjectDetails } from "./shared/models/project.model";
 import { Sidebar } from "./shared/components/Sidebar/Sidebar";
 import { Spinner } from "./shared/components/Spinner/Spinner";
 import { User } from "./shared/models/user.model";
 import { getProjectDetails } from "./shared/services/Project.service";
 import { seedData } from "./shared/services/Auth.service";
+
+export type ProjectContextType = { project: Project | null };
 
 function App()
 {
@@ -53,6 +55,7 @@ function App()
 				let projectDetails = await getProjectDetails(token);
 				console.timeEnd('getProjectDetails');
 				setProjectDetails(projectDetails);
+				setProject(projectDetails.project);
 				setIsLoading(false);
 			}
 			catch (error)
@@ -74,6 +77,7 @@ function App()
 	let [isLoading, setIsLoading] = useState<boolean>(true);
 	let [error, setError] = useState<any>(null);
 	let [projectDetails, setProjectDetails] = useState<ProjectDetails>(null);
+	let [project, setProject] = useState<Project>(null);
 
 	ref.current = ref.current + 1;
 	console.log(`App component re-rendered ${ref.current} times`);
@@ -95,9 +99,9 @@ function App()
 	let successState = (
 		<>
 			<Sidebar />
-			<Navbar project={projectDetails?.project} />
+			<Navbar project={project} />
 			<main>
-				<Outlet />
+				<Outlet context={[project, setProject]} />
 			</main>
 		</>
 	);

@@ -1,9 +1,13 @@
+import { Breadcrumb } from "../../shared/components/Breadcrumb/Breadcrumb";
+import { ProjectContextType } from "../../App";
+import { useOutletContext } from "react-router-dom";
+
 export default function ProjectSettings()
 {
+	let [project, setProject]: any = useOutletContext<ProjectContextType>();
 	return (
 		<div>
-			<h1>Project Settings</h1>
-			{/* Add your component code here */}
+			<Breadcrumb project={project} lastPage="Project Details" />
 		</div>
 	);
 };

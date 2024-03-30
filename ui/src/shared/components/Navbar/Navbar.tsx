@@ -14,11 +14,6 @@ export function Navbar(props: { project: Project })
 	let projectCategory = category?.charAt(0)?.toUpperCase() + category?.substring(1) + " project";
 	let projectIcon = "src/assets/images/project_icon.svg";
 
-	function navigateTo(url: string)
-	{
-		navigate(url);
-	}
-
 	let notImplementedLinks = [
 		{
 			icon: "src/assets/images/releases.svg",
@@ -66,7 +61,7 @@ export function Navbar(props: { project: Project })
 				className="nav_link_button"
 				filled={ButtonFilled.filled}
 				palette={ButtonPalette.ghost}
-				onClick={() => navigateTo("/board")}
+				onClick={() => navigate("/board")}
 			>
 				<SVG src="src/assets/images/board.svg" width={24} height={24} />
 				<p>Kanban Board</p>
@@ -77,7 +72,7 @@ export function Navbar(props: { project: Project })
 				className="nav_link_button"
 				filled={ButtonFilled.filled}
 				palette={ButtonPalette.ghost}
-				onClick={() => navigateTo("/settings")}
+				onClick={() => navigate("/settings",)}
 			>
 				<SVG src="src/assets/images/settings.svg" width={24} height={24} />
 				<p>Project Settings</p>
@@ -93,7 +88,7 @@ export function Navbar(props: { project: Project })
 				className="nav_link_button"
 				filled={ButtonFilled.filled}
 				palette={ButtonPalette.ghost}
-				onClick={() => navigateTo("/showcase")}
+				onClick={() => navigate("/showcase")}
 			>
 				<SVG src="src/assets/images/components.svg" width={24} height={24} />
 				<p>Components</p>

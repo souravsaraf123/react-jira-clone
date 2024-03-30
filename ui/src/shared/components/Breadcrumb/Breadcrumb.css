@@ -1,0 +1,8 @@
+.breadcrumb {
+	display: inline-flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 4px;
+	color: var(--textMedium);
+	font-size: var(--fzSmall);
+}
