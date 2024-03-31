@@ -15,4 +15,15 @@
 	.project_settings_save_button {
 		margin-top: 20px;
 	}
+
+	.project_description_editor {
+		padding-block: 0.25em;
+		& .ql-editor > p {
+			min-height: 8rem;
+		}
+	}
+
+	.helper {
+		font-size: var(--fzSmallest);
+	}
 }

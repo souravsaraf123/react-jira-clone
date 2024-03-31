@@ -7,6 +7,7 @@ import { Project, ProjectCategory } from "../../shared/models/project.model";
 import { Breadcrumb } from "../../shared/components/Breadcrumb/Breadcrumb";
 import { DropdownOption } from "../../shared/models/dropdownOption.model";
 import { ProjectContextType } from "../../App";
+import { RichTextEditor } from "../../shared/components/RichTextEditor/RichTextEditor";
 import Select from "react-select";
 import { Spinner } from "../../shared/components/Spinner/Spinner";
 import { toast } from "react-toastify";
@@ -44,7 +45,8 @@ export default function ProjectSettings()
 			await updateProject(token, projectClone);
 			setProject(projectClone);
 			toast("Project updated successfully", {
-				type: "success"
+				type: "success",
+				theme: "colored",
 			});
 		}
 		catch (error: any)
@@ -83,9 +85,15 @@ export default function ProjectSettings()
 			{/* Description */}
 			<label>
 				<p className="form_label">Description</p>
-				<textarea {...register("description")} className="form_input" value={projectClone.description} onChange={(e) => setProjectClone({ ...projectClone, description: e.target.value })} />
-				<p className="form_label">Describe the project in as much detail as you like</p>
+				{/* <textarea {...register("description")} className="form_input" value={projectClone.description} onChange={(e) => setProjectClone({ ...projectClone, description: e.target.value })} /> */}
 			</label>
+
+			<RichTextEditor
+				value={projectClone.description}
+				onChange={(value) => setProjectClone({ ...projectClone, description: value })}
+				className="project_description_editor"
+			/>
+			<p className="form_label helper">Describe the project in as much detail as you like</p>
 
 			{/* Category */}
 			<label>

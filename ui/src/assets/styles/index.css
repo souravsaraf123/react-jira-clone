@@ -80,10 +80,9 @@ body {
 	}
 
 	&:focus-visible {
-		outline: none;
+		border-color: transparent;
+		outline: solid 2px var(--borderInputFocus);
 		background-color: var(--white);
-		border: 1px solid var(--borderInputFocus);
-		box-shadow: var(--borderInputFocus) 0px 0px 0px 1px;
 	}
 }
 

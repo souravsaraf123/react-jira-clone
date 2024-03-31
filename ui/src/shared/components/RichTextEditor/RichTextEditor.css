@@ -1,0 +1,31 @@
+.quill {
+	& .ql-toolbar {
+		border-top-left-radius: 6px;
+		border-top-right-radius: 6px;
+	}
+
+	& .ql-container {
+		font-family: var(--fontFamilyRegular);
+		color: var(--textDarkest);
+		font-size: var(--fzSmall);
+		border-bottom-left-radius: 6px;
+		border-bottom-right-radius: 6px;
+	}
+}
+
+.quill:has(.ql-editor:focus) {
+	& .ql-container {
+		border-width: 2px;
+		border-color: var(--borderInputFocus);
+	}
+
+	& .ql-toolbar {
+		border-top-color: var(--borderInputFocus);
+		border-left-color: var(--borderInputFocus);
+		border-right-color: var(--borderInputFocus);
+
+		border-top-width: 2px;
+		border-left-width: 2px;
+		border-right-width: 2px;
+	}
+}
