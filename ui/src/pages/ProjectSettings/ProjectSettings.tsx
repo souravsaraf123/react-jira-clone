@@ -9,6 +9,7 @@ import { DropdownOption } from "../../shared/models/dropdownOption.model";
 import { ProjectContextType } from "../../App";
 import Select from "react-select";
 import { Spinner } from "../../shared/components/Spinner/Spinner";
+import { toast } from "react-toastify";
 import { updateProject } from "../../shared/services/Project.service";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
@@ -42,6 +43,9 @@ export default function ProjectSettings()
 			let token = localStorage.getItem('token');
 			await updateProject(token, projectClone);
 			setProject(projectClone);
+			toast("Project updated successfully", {
+				type: "success"
+			});
 		}
 		catch (error: any)
 		{

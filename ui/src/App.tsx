@@ -1,3 +1,5 @@
+import "react-toastify/dist/ReactToastify.css";
+
 import { Project, ProjectDetails } from "./shared/models/project.model";
 import { useEffect, useRef, useState } from "react";
 
@@ -5,6 +7,7 @@ import { Navbar } from "./shared/components/Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "./shared/components/Sidebar/Sidebar";
 import { Spinner } from "./shared/components/Spinner/Spinner";
+import { ToastContainer } from "react-toastify";
 import { User } from "./shared/models/user.model";
 import { getProjectDetails } from "./shared/services/Project.service";
 import { seedData } from "./shared/services/Auth.service";
@@ -101,6 +104,7 @@ function App()
 			<Sidebar />
 			<Navbar project={project} />
 			<main>
+				<ToastContainer />
 				<Outlet context={[project, setProject]} />
 			</main>
 		</>
