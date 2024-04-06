@@ -1,6 +1,6 @@
 import "./About.css";
 
-import { GithubLink } from "../../../GithubLink/GithubLink";
+import { GithubLink } from "../../GithubLink/GithubLink";
 import SVG from 'react-inlinesvg';
 
 export function About()

@@ -13,7 +13,11 @@ import { User } from "./shared/models/user.model";
 import { getProjectDetails } from "./shared/services/Project.service";
 import { seedData } from "./shared/services/Auth.service";
 
-export type ProjectContextType = { project: Project | null };
+export type ProjectWithDetailsContext = {
+	project: Project | null,
+	setProject: (project: Project) => void,
+	projectDetails: ProjectDetails | null
+};
 
 function App()
 {
@@ -106,7 +110,11 @@ function App()
 			<Navbar project={project} />
 			<main>
 				<ToastContainer />
-				<Outlet context={[project, setProject]} />
+				<Outlet context={{
+					project,
+					setProject,
+					projectDetails
+				} satisfies ProjectWithDetailsContext} />
 			</main>
 		</>
 	);

@@ -6,7 +6,7 @@ import { Project, ProjectCategory } from "../../shared/models/project.model";
 
 import { Breadcrumb } from "../../shared/components/Breadcrumb/Breadcrumb";
 import { DropdownOption } from "../../shared/models/dropdownOption.model";
-import { ProjectContextType } from "../../App";
+import { ProjectWithDetailsContext } from "../../App";
 import { RichTextEditor } from "../../shared/components/RichTextEditor/RichTextEditor";
 import Select from "react-select";
 import { Spinner } from "../../shared/components/Spinner/Spinner";
@@ -17,7 +17,7 @@ import { useState } from "react";
 
 export default function ProjectSettings()
 {
-	let [project, setProject]: any = useOutletContext<ProjectContextType>();
+	let { project, setProject } = useOutletContext<ProjectWithDetailsContext>();
 	let [projectClone, setProjectClone] = useState(structuredClone(project));
 	let [saving, setSaving] = useState(false);
 	const {
@@ -116,7 +116,7 @@ export default function ProjectSettings()
 							{
 								console.log('Selected category : ', selectedOption);
 								field.onChange(selectedOption.value);
-								setProjectClone({ ...projectClone, category: selectedOption?.value })
+								setProjectClone({ ...projectClone, category: selectedOption?.value as ProjectCategory })
 							}}
 						/>
 					)}
