@@ -54,6 +54,10 @@
 			}
 		}
 	}
+
+	&.active {
+		color: var(--primary) !important;
+	}
 }
 
 .nav_separator {

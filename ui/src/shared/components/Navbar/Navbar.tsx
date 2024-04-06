@@ -1,10 +1,10 @@
 import "./Navbar.css";
 
 import { Button, ButtonFilled, ButtonPalette } from "../Button/Button";
+import { useMatch, useNavigate } from "react-router-dom";
 
 import { Project } from "../../models/project.model";
 import SVG from "react-inlinesvg";
-import { useNavigate } from "react-router-dom";
 
 export function Navbar(props: { project: Project })
 {
@@ -58,7 +58,7 @@ export function Navbar(props: { project: Project })
 
 			{/* Kanban Board */}
 			<Button
-				className="nav_link_button"
+				className={"nav_link_button" + (useMatch("/board") ? " active" : "")}
 				filled={ButtonFilled.filled}
 				palette={ButtonPalette.ghost}
 				onClick={() => navigate("/board")}
@@ -69,7 +69,7 @@ export function Navbar(props: { project: Project })
 
 			{/* Project Settings */}
 			<Button
-				className="nav_link_button"
+				className={"nav_link_button" + (useMatch("/settings") ? " active" : "")}
 				filled={ButtonFilled.filled}
 				palette={ButtonPalette.ghost}
 				onClick={() => navigate("/settings",)}
@@ -85,7 +85,7 @@ export function Navbar(props: { project: Project })
 
 			{/* Components */}
 			<Button
-				className="nav_link_button"
+				className={"nav_link_button" + (useMatch("/showcase") ? " active" : "")}
 				filled={ButtonFilled.filled}
 				palette={ButtonPalette.ghost}
 				onClick={() => navigate("/showcase")}
