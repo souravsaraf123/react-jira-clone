@@ -69,13 +69,13 @@ export function IssueCard(props: { issue: Issue, index: number, userMap: Record<
 	}
 	return (
 		<Draggable draggableId={props.issue.id.toString()} index={props.index}>
-			{(provided) => (
+			{(provided, snapshot) => (
 				<Link
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
 					ref={provided.innerRef}
 					to={`/board/issues/${props.issue.id}`}
-					className="issue_card">
+					className={"issue_card" + (snapshot.isDragging ? " dragging" : "")}>
 					<p>{props.issue.title}</p>
 
 					<div className="issue_footer_row">
