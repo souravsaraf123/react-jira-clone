@@ -77,7 +77,7 @@ export function Board()
 			<div className="status_container" key={status}>
 				<p className="status_title">{statusTextMap[status]} {currentIssues.length}</p>
 				{
-					currentIssues.map(i =>
+					_.orderBy(currentIssues, (i) => i.listPosition, 'asc').map(i =>
 					{
 						return (
 							<IssueCard issue={i} userMap={userMap} key={i.id} />
