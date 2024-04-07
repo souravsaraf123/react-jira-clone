@@ -13,6 +13,13 @@ export enum IssueStatus
 	done = 'done',
 }
 
+export const IssueStatusOrdering: Record<number, IssueStatus> = {
+	1: IssueStatus.backlog,
+	2: IssueStatus.selected,
+	3: IssueStatus.inprogress,
+	4: IssueStatus.done,
+}
+
 export enum IssuePriority
 {
 	highest = '5',

@@ -1,7 +1,8 @@
 import "./Board.css";
 
 import { Button, ButtonPalette, ButtonSize } from "../../shared/components/Button/Button";
-import { Issue, IssueStatus } from "../../shared/models/issue.model";
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
+import { Issue, IssueStatus, IssueStatusOrdering } from "../../shared/models/issue.model";
 
 import { Breadcrumb } from "../../shared/components/Breadcrumb/Breadcrumb";
 import { GithubLink } from "../../shared/components/GithubLink/GithubLink";
@@ -32,8 +33,119 @@ export function Board()
 
 	let userMap: Record<number, User> = _.keyBy(projectDetails.users, (u) => u.id);
 	let filteredIssues = searchAndFilter(issues, searchTerm, selectedUsers, onlyMyIssues, recentlyUpdated);
-	let issuesGroupedByStatus = _.groupBy(filteredIssues, (i) => i.status);
+	let issuesGroupedByStatus = groupIssuesByStatus(filteredIssues);
 	let isAnyFilterApplied = searchTerm || selectedUsers.length > 0 || onlyMyIssues || recentlyUpdated;
+
+	function groupIssuesByStatus(issues: Issue[])
+	{
+		let issuesGroupedByStatus = _.groupBy(issues, (i) => i.status) as Record<IssueStatus, Issue[]>;
+
+		for (let i = 1; i <= Object.values(IssueStatus).length; i++)
+		{
+			let status = IssueStatusOrdering[i];
+			if (!issuesGroupedByStatus[status])
+			{
+				issuesGroupedByStatus[status] = [];
+			}
+			else
+			{
+				issuesGroupedByStatus[status] = _.orderBy(issuesGroupedByStatus[status], (i) => i.listPosition, 'asc');
+			}
+		}
+
+		return issuesGroupedByStatus;
+	}
+
+	function handleDragEnd(result: DropResult)
+	{
+		// TODO: implement later
+		console.log(result);
+
+		// If the user cancels the drag
+		if (result.reason === "CANCEL")
+		{
+			return;
+		}
+
+		// If the user drops the draggable outside of a droppable
+		if (!result.destination)
+		{
+			return;
+		}
+
+		// If the user drops the draggable back to its original position
+		if (result.source.droppableId === result.destination.droppableId &&
+			result.source.index === result.destination.index
+		)
+		{
+			return;
+		}
+
+		let payloadForApi: Partial<Issue>[] = [];
+		let sourceStatus = result.source.droppableId as IssueStatus;
+		let destinationStatus = result.destination.droppableId as IssueStatus;
+		let clonedIssues = structuredClone(issues);
+		let issuesGroupedByStatus = groupIssuesByStatus(clonedIssues);
+		let draggedIssue = issuesGroupedByStatus[sourceStatus][result.source.index];
+		console.log('Grouped Issues Initially : ', structuredClone(issuesGroupedByStatus));
+
+		// Delete the issue from the source column , update list positions of all items below the dragged item
+		issuesGroupedByStatus[sourceStatus].splice(result.source.index, 1);
+
+		draggedIssue.status = destinationStatus;
+		issuesGroupedByStatus[destinationStatus].splice(result.destination.index, 0, draggedIssue);
+
+		// New UI State
+		let pos = 0;
+		let newIssues: Issue[] = Object.values(issuesGroupedByStatus).flat();
+		for (let i = 1; i < Object.values(IssueStatus).length; i++)
+		{
+			let status = IssueStatusOrdering[i];
+			for (let issue of issuesGroupedByStatus[status])
+			{
+				issue.listPosition = pos++;
+			}
+
+			if (status === sourceStatus)
+			{
+				console.log('Final Value of source column : ', _.map(issuesGroupedByStatus[status], (i) => i.id).join(', '));
+			}
+
+			if (status === destinationStatus)
+			{
+				console.log('Final Value of dest column : ', _.map(issuesGroupedByStatus[status], (i) => i.id).join(', '));
+			}
+		}
+
+		console.log('Grouped Issues Finally : ', issuesGroupedByStatus);
+
+		// Prepare payload for API
+		for (let i = 0; i < newIssues.length; i++)
+		{
+			let newIssue = newIssues[i];
+			let oldIssue = issues[i];
+
+			if (newIssue.listPosition !== oldIssue.listPosition)
+			{
+				payloadForApi.push({
+					id: newIssue.id,
+					listPosition: newIssue.listPosition
+				});
+			}
+		}
+		setIssues(newIssues); // optimistic update
+
+		// TODO: Call API to update issues
+		try
+		{
+			// await updateIssues(payloadForApi);
+		}
+		catch (error)
+		{
+			alert("Failed to update issues. Please try again later.");
+			setIssues(issues);
+		}
+	}
 
 	// Toggle selected user avatar
 	function toggleSelectedUser(id: number)
@@ -68,121 +180,127 @@ export function Board()
 	for (let status of Object.values(IssueStatus))
 	{
 		let currentIssues = issuesGroupedByStatus[status];
-		if (!currentIssues)
-		{
-			currentIssues = [];
-		}
-
 		statusColumns.push(
-			<div className="status_container" key={status}>
-				<p className="status_title">{statusTextMap[status]} {currentIssues.length}</p>
-				{
-					_.orderBy(currentIssues, (i) => i.listPosition, 'asc').map(i =>
-					{
-						return (
-							<IssueCard issue={i} userMap={userMap} key={i.id} />
-						);
-					})
-				}
-			</div>
+			<Droppable droppableId={status} key={status}>
+				{(provided) => (
+					<div
+						className="status_container"
+						{...provided.droppableProps}
+						ref={provided.innerRef}>
+						<p className="status_title">{statusTextMap[status]} {currentIssues.length}</p>
+						{
+							_.orderBy(currentIssues, (i) => i.listPosition, 'asc').map((iss, index) =>
+							{
+								return (
+									<IssueCard index={index} issue={iss} userMap={userMap} key={iss.id} />
+								);
+							})
+						}
+						{provided.placeholder}
+					</div>
+				)}
+			</Droppable>
 		);
 	}
 
 	return (
-		<div className="board_container">
 
-			{/* Header Container */}
-			<div>
+		<DragDropContext onDragEnd={handleDragEnd}>
+			<div className="board_container">
 
-				{/* Breadcrumb */}
-				<Breadcrumb project={project} lastPage="Kanban Board" />
-
-				{/* Title Container */}
-				<div style={{ display: "flex", justifyContent: "space-between" }}>
-
-					{/* Title */}
-					<span className="title">Kanban Board</span>
-
-					{/* Github Link */}
-					<GithubLink />
-
-				</div>
-
-			</div>
-
-			{/* Search & Filter Container */}
-			<div className="search_filter_container">
-
-				{/* Search Input */}
-				<input
-					className="form_input search_input"
-					placeholder="Search Issue Title"
-					type="search"
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-				/>
-
-				{/* Users */}
+				{/* Header Container */}
 				<div>
-					{
-						projectDetails.users.map(u =>
-						{
-							return (
-								<button
-									key={u.id}
-									title={u.name}
-									className={`user_button ${selectedUsers.includes(u.id) ? "selected" : ""}`}
-									onClick={() => toggleSelectedUser(u.id)}>
-									<img src={u.avatarUrl} alt={u.name} height="32px" width="32px" />
-								</button>
-							);
-						})
-					}
+
+					{/* Breadcrumb */}
+					<Breadcrumb project={project} lastPage="Kanban Board" />
+
+					{/* Title Container */}
+					<div style={{ display: "flex", justifyContent: "space-between" }}>
+
+						{/* Title */}
+						<span className="title">Kanban Board</span>
+
+						{/* Github Link */}
+						<GithubLink />
+
+					</div>
+
 				</div>
 
-				{/* Only My Issues */}
-				<Button
-					palette={ButtonPalette.ghost}
-					size={ButtonSize.small}
-					className={"issue_filter_button" + `${onlyMyIssues ? " active" : ""}`}
-					onClick={() => setOnlyMyIssues(!onlyMyIssues)}>
-					Only My Issues
-				</Button>
+				{/* Search & Filter Container */}
+				<div className="search_filter_container">
 
-				{/* Recently Updated */}
-				<Button
-					palette={ButtonPalette.ghost}
-					size={ButtonSize.small}
-					className={"issue_filter_button" + `${recentlyUpdated ? " active" : ""}`}
-					onClick={() => setRecentlyUpdated(!recentlyUpdated)}>
-					Recently Updated
-				</Button>
+					{/* Search Input */}
+					<input
+						className="form_input search_input"
+						placeholder="Search Issue Title"
+						type="search"
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+					/>
 
-				{isAnyFilterApplied && <div className="vr"></div>}
+					{/* Users */}
+					<div>
+						{
+							projectDetails.users.map(u =>
+							{
+								return (
+									<button
+										key={u.id}
+										title={u.name}
+										className={`user_button ${selectedUsers.includes(u.id) ? "selected" : ""}`}
+										onClick={() => toggleSelectedUser(u.id)}>
+										<img src={u.avatarUrl} alt={u.name} height="32px" width="32px" />
+									</button>
+								);
+							})
+						}
+					</div>
 
-				{/* Clear All */}
-				{isAnyFilterApplied &&
+					{/* Only My Issues */}
 					<Button
 						palette={ButtonPalette.ghost}
 						size={ButtonSize.small}
-						onClick={() =>
-						{
-							setSearchTerm("");
-							setSelectedUsers([]);
-							setOnlyMyIssues(false);
-							setRecentlyUpdated(false);
-						}}>
-						Clear All
+						className={"issue_filter_button" + `${onlyMyIssues ? " active" : ""}`}
+						onClick={() => setOnlyMyIssues(!onlyMyIssues)}>
+						Only My Issues
 					</Button>
-				}
+
+					{/* Recently Updated */}
+					<Button
+						palette={ButtonPalette.ghost}
+						size={ButtonSize.small}
+						className={"issue_filter_button" + `${recentlyUpdated ? " active" : ""}`}
+						onClick={() => setRecentlyUpdated(!recentlyUpdated)}>
+						Recently Updated
+					</Button>
+
+					{isAnyFilterApplied && <div className="vr"></div>}
+
+					{/* Clear All */}
+					{isAnyFilterApplied &&
+						<Button
+							palette={ButtonPalette.ghost}
+							size={ButtonSize.small}
+							onClick={() =>
+							{
+								setSearchTerm("");
+								setSelectedUsers([]);
+								setOnlyMyIssues(false);
+								setRecentlyUpdated(false);
+							}}>
+							Clear All
+						</Button>
+					}
+
+				</div>
+
+				{/* Issues Board */}
+				<div className="issues_board">
+					{statusColumns}
+				</div>
 
 			</div>
-
-			{/* Issues Board */}
-			<div className="issues_board">
-				{statusColumns}
-			</div>
-
-		</div>
+		</DragDropContext>
 	);
 }

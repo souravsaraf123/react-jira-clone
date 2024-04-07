@@ -2,11 +2,12 @@ import "./IssueCard.css";
 
 import { Issue, IssuePriority, IssueType } from "../../models/issue.model";
 
+import { Draggable } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
 import SVG from "react-inlinesvg";
 import { User } from "../../models/user.model";
 
-export function IssueCard(props: { issue: Issue, userMap: Record<number, User> })
+export function IssueCard(props: { issue: Issue, index: number, userMap: Record<number, User> })
 {
 	let getIssueTypeIcon = () =>
 	{
@@ -67,19 +68,26 @@ export function IssueCard(props: { issue: Issue, userMap: Record<number, User> }
 		return assigneeIcons;
 	}
 	return (
-		<Link
-			to={`/board/issues/${props.issue.id}`}
-			className="issue_card">
-			<p>{props.issue.title}</p>
+		<Draggable draggableId={props.issue.id.toString()} index={props.index}>
+			{(provided) => (
+				<Link
+					{...provided.draggableProps}
+					{...provided.dragHandleProps}
+					ref={provided.innerRef}
+					to={`/board/issues/${props.issue.id}`}
+					className="issue_card">
+					<p>{props.issue.title}</p>
 
-			<div className="issue_footer_row">
-				{getIssueTypeIcon()}
-				{getIssuePriorityIcon()}
+					<div className="issue_footer_row">
+						{getIssueTypeIcon()}
+						{getIssuePriorityIcon()}
 
-				<div className="user_container">
-					{getAssigneeIcons()}
-				</div>
-			</div>
-		</Link>
+						<div className="user_container">
+							{getAssigneeIcons()}
+						</div>
+					</div>
+				</Link>
+			)}
+		</Draggable>
 	);
 }
