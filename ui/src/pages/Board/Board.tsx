@@ -3,15 +3,17 @@ import "./Board.css";
 import { Button, ButtonPalette, ButtonSize } from "../../shared/components/Button/Button";
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { Issue, IssueStatus, IssueStatusOrdering } from "../../shared/models/issue.model";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 import { Breadcrumb } from "../../shared/components/Breadcrumb/Breadcrumb";
+import { CreateIssue } from "../../shared/components/CreateIssue/CreateIssue";
 import { GithubLink } from "../../shared/components/GithubLink/GithubLink";
 import { IssueCard } from "../../shared/components/IssueCard/IssueCard";
 import { ProjectWithDetailsContext } from "../../App";
+import ReactModal from 'react-modal';
 import { User } from "../../shared/models/user.model";
 import _ from "lodash";
 import { updateIssues } from "../../shared/services/Issue.service";
-import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
 let statusTextMap: Record<IssueStatus, string> = {
@@ -25,17 +27,32 @@ const TWO_DAYS = 2 * 24 * 60 * 60 * 1000;
 
 export function Board()
 {
+	// Project State
 	let { project, projectDetails } = useOutletContext<ProjectWithDetailsContext>();
+
+	// Issues State
 	let [issues, setIssues] = useState(projectDetails.issues);
+
+	// Search & Filter State
 	let [searchTerm, setSearchTerm] = useState("");
 	let [selectedUsers, setSelectedUsers] = useState<number[]>([]);
 	let [onlyMyIssues, setOnlyMyIssues] = useState(false);
 	let [recentlyUpdated, setRecentlyUpdated] = useState(false);
 
+	// Local Variables
 	let userMap: Record<number, User> = _.keyBy(projectDetails.users, (u) => u.id);
 	let filteredIssues = searchAndFilter(issues, searchTerm, selectedUsers, onlyMyIssues, recentlyUpdated);
 	let issuesGroupedByStatus = groupIssuesByStatus(filteredIssues);
 	let isAnyFilterApplied = searchTerm || selectedUsers.length > 0 || onlyMyIssues || recentlyUpdated;
+
+	// Route Location & Navigations
+	const location = useLocation();
+	let navigate = useNavigate();
+	console.log('Pathname : ', location.pathname);
+	let lastSegment = location.pathname.split('/').pop();
+
+	// Modal Is Open
+	let isOpen = (lastSegment === "createIssue");
 
 	function groupIssuesByStatus(issues: Issue[])
 	{
@@ -212,44 +229,44 @@ export function Board()
 
 	return (
 
-		<DragDropContext onDragEnd={handleDragEnd}>
-			<div className="board_container">
+		<>
+			{/* Kanban Board */}
+			<DragDropContext onDragEnd={handleDragEnd}>
+				<div className="board_container">
 
-				{/* Header Container */}
-				<div>
+					{/* Header Container */}
+					<div>
 
-					{/* Breadcrumb */}
-					<Breadcrumb project={project} lastPage="Kanban Board" />
+						{/* Breadcrumb */}
+						<Breadcrumb project={project} lastPage="Kanban Board" />
 
-					{/* Title Container */}
-					<div style={{ display: "flex", justifyContent: "space-between" }}>
+						{/* Title Container */}
+						<div style={{ display: "flex", justifyContent: "space-between" }}>
 
-						{/* Title */}
-						<span className="title">Kanban Board</span>
+							{/* Title */}
+							<span className="title">Kanban Board</span>
 
-						{/* Github Link */}
-						<GithubLink />
+							{/* Github Link */}
+							<GithubLink />
+
+						</div>
 
 					</div>
 
-				</div>
+					{/* Search & Filter Container */}
+					<div className="search_filter_container">
 
-				{/* Search & Filter Container */}
-				<div className="search_filter_container">
+						{/* Search Input */}
+						<input
+							className="form_input search_input"
+							placeholder="Search Issue Title"
+							type="search"
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)} />
 
-					{/* Search Input */}
-					<input
-						className="form_input search_input"
-						placeholder="Search Issue Title"
-						type="search"
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-					/>
-
-					{/* Users */}
-					<div>
-						{
-							projectDetails.users.map(u =>
+						{/* Users */}
+						<div>
+							{projectDetails.users.map(u =>
 							{
 								return (
 									<button
@@ -260,54 +277,78 @@ export function Board()
 										<img src={u.avatarUrl} alt={u.name} height="32px" width="32px" />
 									</button>
 								);
-							})
-						}
-					</div>
+							})}
+						</div>
 
-					{/* Only My Issues */}
-					<Button
-						palette={ButtonPalette.ghost}
-						size={ButtonSize.small}
-						className={"issue_filter_button" + `${onlyMyIssues ? " active" : ""}`}
-						onClick={() => setOnlyMyIssues(!onlyMyIssues)}>
-						Only My Issues
-					</Button>
-
-					{/* Recently Updated */}
-					<Button
-						palette={ButtonPalette.ghost}
-						size={ButtonSize.small}
-						className={"issue_filter_button" + `${recentlyUpdated ? " active" : ""}`}
-						onClick={() => setRecentlyUpdated(!recentlyUpdated)}>
-						Recently Updated
-					</Button>
-
-					{isAnyFilterApplied && <div className="vr"></div>}
-
-					{/* Clear All */}
-					{isAnyFilterApplied &&
+						{/* Only My Issues */}
 						<Button
 							palette={ButtonPalette.ghost}
 							size={ButtonSize.small}
-							onClick={() =>
-							{
-								setSearchTerm("");
-								setSelectedUsers([]);
-								setOnlyMyIssues(false);
-								setRecentlyUpdated(false);
-							}}>
-							Clear All
+							className={"issue_filter_button" + `${onlyMyIssues ? " active" : ""}`}
+							onClick={() => setOnlyMyIssues(!onlyMyIssues)}>
+							Only My Issues
 						</Button>
-					}
+
+						{/* Recently Updated */}
+						<Button
+							palette={ButtonPalette.ghost}
+							size={ButtonSize.small}
+							className={"issue_filter_button" + `${recentlyUpdated ? " active" : ""}`}
+							onClick={() => setRecentlyUpdated(!recentlyUpdated)}>
+							Recently Updated
+						</Button>
+
+						{isAnyFilterApplied && <div className="vr"></div>}
+
+						{/* Clear All */}
+						{isAnyFilterApplied &&
+							<Button
+								palette={ButtonPalette.ghost}
+								size={ButtonSize.small}
+								onClick={() =>
+								{
+									setSearchTerm("");
+									setSelectedUsers([]);
+									setOnlyMyIssues(false);
+									setRecentlyUpdated(false);
+								}}>
+								Clear All
+							</Button>}
+
+					</div>
+
+					{/* Issues Board */}
+					<div className="issues_board">
+						{statusColumns}
+					</div>
 
 				</div>
+			</DragDropContext>
 
-				{/* Issues Board */}
-				<div className="issues_board">
-					{statusColumns}
-				</div>
+			{/* Create Issue Modal */}
+			<ReactModal
+				isOpen={isOpen}
+				appElement={document.getElementById('root') as HTMLElement}
+				shouldCloseOnEsc={true}
+				onRequestClose={() => navigate('/board')}
+				style={{
+					overlay: {
+						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+					},
+					content: {
+						top: '2em',
+						left: '50%',
+						right: 'auto',
+						bottom: '2em',
+						transform: 'translateX(-50%)',
+						maxWidth: '50rem',
+						width: '90%',
+						padding: '1.5em 2.5em',
+					},
+				}}>
+				<CreateIssue users={projectDetails.users}></CreateIssue>
+			</ReactModal>
 
-			</div>
-		</DragDropContext>
+		</>
 	);
 }

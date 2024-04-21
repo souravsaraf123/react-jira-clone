@@ -62,7 +62,14 @@ body {
 	color: var(--textMedium);
 	font-family: var(--fontFamilyMedium);
 	font-size: var(--fzSmall);
+	font-weight: 700;
 	padding-bottom: 4px;
+	line-height: 1.5;
+
+	&.helper {
+		margin-top: 3px;
+		font-size: var(--fzSmallest);
+	}
 }
 
 .form_input {

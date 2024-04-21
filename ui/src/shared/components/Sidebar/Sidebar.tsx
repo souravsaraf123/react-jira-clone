@@ -5,11 +5,16 @@ import { Button, ButtonFilled, ButtonPalette, ButtonProps, ButtonSize } from "..
 import { About } from "./About/About";
 import { Popover } from 'react-tiny-popover';
 import SVG from 'react-inlinesvg';
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export function Sidebar()
 {
 	let [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+	// Route Navigation Hook
+	let navigate = useNavigate();
+
 	let homeIcon = "src/assets/images/jira_light.svg";
 	let searchIcon = "src/assets/images/search.svg";
 	let plusIcon = "src/assets/images/plus.svg";
@@ -50,7 +55,7 @@ export function Sidebar()
 			{/* New Issue */}
 			<Button
 				{...props}
-				onClick={() => alert("New Issue")}>
+				onClick={() => navigate('/board/createIssue')}>
 				<SVG src={plusIcon} height={height} width={width} />
 				<span>CREATE ISSUE</span>
 			</Button>

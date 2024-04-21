@@ -29,6 +29,12 @@ const router = createBrowserRouter([
 			{
 				path: "board",
 				element: <Board />,
+				children: [
+					{
+						path: "createIssue",
+						element: <Board />,
+					},
+				],
 			},
 			{
 				path: "settings",
