@@ -2,6 +2,7 @@ import { createEntity, deleteEntity, findEntityOrThrow, updateEntity } from './.
 
 import { Issue } from './../entities/index';
 import { catchErrors } from './../errors/index';
+import { getConnection } from 'typeorm';
 
 export const getProjectIssues = catchErrors(async (req: any, res: any) =>
 {
@@ -42,6 +43,28 @@ export const update = catchErrors(async (req, res: any) =>
 {
 	const issue = await updateEntity(Issue, req.params.issueId, req.body);
 	res.respond({ issue });
+});
+
+export const updateMultiple = catchErrors(async (req, res: any) =>
+{
+	console.log('Updating multiple issues');
+	let issuesToUpdate: Partial<Issue>[] = req.body;
+	let qr = getConnection().createQueryRunner();
+	qr.startTransaction();
+	try
+	{
+		for (let issue of issuesToUpdate)
+		{
+			await qr.manager.update(Issue, issue.id, issue);
+		}
+		qr.commitTransaction();
+		res.respond(issuesToUpdate);
+	}
+	catch (error)
+	{
+		qr.rollbackTransaction();
+		throw error;
+	}
 });
 
 export const remove = catchErrors(async (req, res: any) =>

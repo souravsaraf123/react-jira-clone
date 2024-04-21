@@ -10,6 +10,7 @@ import { IssueCard } from "../../shared/components/IssueCard/IssueCard";
 import { ProjectWithDetailsContext } from "../../App";
 import { User } from "../../shared/models/user.model";
 import _ from "lodash";
+import { updateIssues } from "../../shared/services/Issue.service";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
@@ -56,7 +57,7 @@ export function Board()
 		return issuesGroupedByStatus;
 	}
 
-	function handleDragEnd(result: DropResult)
+	async function handleDragEnd(result: DropResult)
 	{
 		// TODO: implement later
 		console.log(result);
@@ -97,51 +98,57 @@ export function Board()
 
 		// New UI State
 		let pos = 0;
-		let newIssues: Issue[] = Object.values(issuesGroupedByStatus).flat();
+		let newIssues: Issue[] = _.orderBy(Object.values(issuesGroupedByStatus).flat(), i => i.id);
 		for (let i = 1; i < Object.values(IssueStatus).length; i++)
 		{
 			let status = IssueStatusOrdering[i];
 			for (let issue of issuesGroupedByStatus[status])
 			{
-				issue.listPosition = pos++;
-			}
-
-			if (status === sourceStatus)
-			{
-				console.log('Final Value of source column : ', _.map(issuesGroupedByStatus[status], (i) => i.id).join(', '));
-			}
-
-			if (status === destinationStatus)
-			{
-				console.log('Final Value of dest column : ', _.map(issuesGroupedByStatus[status], (i) => i.id).join(', '));
+				pos++;
+				issue.listPosition = pos;
 			}
 		}
 
 		console.log('Grouped Issues Finally : ', issuesGroupedByStatus);
 
 		// Prepare payload for API
+		let oldIssuesCopy = _.orderBy(structuredClone(issues), i => i.id);
 		for (let i = 0; i < newIssues.length; i++)
 		{
 			let newIssue = newIssues[i];
-			let oldIssue = issues[i];
+			let oldIssue = oldIssuesCopy[i];
 
+			let delta: Partial<Issue> = {};
+
+			// If the issue has changed its position
 			if (newIssue.listPosition !== oldIssue.listPosition)
 			{
-				payloadForApi.push({
-					id: newIssue.id,
-					listPosition: newIssue.listPosition
-				});
+				delta.listPosition = newIssue.listPosition;
+			}
+
+			// If the issue has changed its status
+			if (newIssue.status !== oldIssue.status)
+			{
+				delta.status = newIssue.status;
+			}
+
+			// If there are any changes, add the issue to the payload
+			if (Object.keys(delta).length > 0)
+			{
+				payloadForApi.push({ id: newIssue.id, ...delta });
 			}
 		}
 		setIssues(newIssues); // optimistic update
 
-		// TODO: Call API to update issues
 		try
 		{
-			// await updateIssues(payloadForApi);
+			console.log('Payload for API : ', payloadForApi);
+			let token = localStorage.getItem("token");
+			await updateIssues(token, payloadForApi);
 		}
 		catch (error)
 		{
+			console.error(error);
 			alert("Failed to update issues. Please try again later.");
 			setIssues(issues);
 		}
