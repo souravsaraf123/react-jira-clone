@@ -32,6 +32,14 @@ export enum IssuePriority
 	lowest = '1',
 }
 
+export const IssuePriorityLabel = {
+	[IssuePriority.highest]: 'Highest',
+	[IssuePriority.high]: 'High',
+	[IssuePriority.medium]: 'Medium',
+	[IssuePriority.low]: 'Low',
+	[IssuePriority.lowest]: 'Lowest',
+}
+
 export interface Issue
 {
 	id: number,
