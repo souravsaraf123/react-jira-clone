@@ -55,7 +55,7 @@ const initializeApp = async (): Promise<void> =>
 	await establishDatabaseConnection();
 	console.log('Database connection established');
 	initializeExpress();
-	console.log('Express app initialized');
+	console.log('Api started on port 3000 ...');
 };
 
 initializeApp().catch(console.error);

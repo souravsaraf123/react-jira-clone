@@ -5,9 +5,10 @@
 	"license": "MIT",
 	"scripts": {
 		"compile": "rimraf dist && tsc --project tsconfig.json && rimraf dist",
-		"start": "nodemon --exec ts-node --files src/index.ts",
+		"start": "nodemon --exec node -r ts-node/register --env-file=.env src/index.ts",
 		"start:test": "cross-env NODE_ENV='test' DB_DATABASE='jira_test' npm start",
-		"build": "cd src && tsc"
+		"build": "cd src && tsc",
+		"dbSync": "node -r ts-node/register --env-file=.env src/dbSync.ts"
 	},
 	"devDependencies": {
 		"@types/cors": "2.8.17",

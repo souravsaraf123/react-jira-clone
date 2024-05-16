@@ -2,8 +2,9 @@ import * as entities from './../entities/index';
 
 import { Connection, createConnection } from 'typeorm';
 
-const createDatabaseConnection = (): Promise<Connection> =>
-	createConnection({
+const createDatabaseConnection = (): Promise<Connection> => {
+	console.log('process.env.DB_DATABASE : ', process.env.DB_DATABASE);
+	return createConnection({
 		type: 'postgres',
 		host: process.env.DB_HOST,
 		port: Number(process.env.DB_PORT),
@@ -11,7 +12,8 @@ const createDatabaseConnection = (): Promise<Connection> =>
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE,
 		entities: Object.values(entities),
-		synchronize: true,
+		synchronize: false,
 	});
+};
 
 export default createDatabaseConnection;

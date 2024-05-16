@@ -145,7 +145,7 @@ export function CreateIssue(prop: { users: User[] })
 							{
 								let selectedOption = selected as DropdownOption;
 								field.onChange(selectedOption.value);
-								setNewIssue({ ...newIssue, type: selectedOption?.value as IssueType })
+								setNewIssue({ ...newIssue, type: selectedOption?.value as IssueType });
 							}}
 						/>
 					)}
