@@ -115,6 +115,8 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 		defaultValues: newIssue,
 	});
 
+	console.log('Current State of newIssue : ', newIssue);
+
 	let handleCloseModal = () =>
 	{
 		navigate('/board');
@@ -136,7 +138,7 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 	});
 
 	// Function to handle form submission
-	let onFormSubmit = async (newIssue: Partial<Issue>) =>
+	let onFormSubmit = async () =>
 	{
 		setSaving(true);
 		console.log('Form submitted with data as : ', newIssue);
@@ -148,9 +150,7 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 				type: "success",
 				theme: "colored",
 			});
-			console.log('New Issue created successfully : ', issueCreated);
 			let newIssues = [...prop.issues, issueCreated];
-			console.log('Reloading board with new issues : ', newIssues);
 			prop.setIssues(newIssues);
 			navigate('/board');
 		}
@@ -223,7 +223,11 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 				<p className="form_label">Description</p>
 				<RichTextEditor
 					value={newIssue.description}
-					onChange={(value: string) => setNewIssue({ ...newIssue, description: value })}
+					onChange={(value: string) =>
+					{
+						console.log('Issue desc updated : ', value);
+						setNewIssue({ ...newIssue, description: value });
+					}}
 					className="description_editor"
 				/>
 				<p className="form_label helper">Describe the issue in as much detail as you like</p>

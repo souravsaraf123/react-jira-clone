@@ -25,7 +25,7 @@ export async function updateIssues(token: string, issues: Partial<Issue>[])
 
 export async function createIssue(token: string, issue: Partial<Issue>)
 {
-	console.log('Creating issue : ', issue);
+	console.log('Creating issue from request : ', issue);
 	try
 	{
 		let response = await axios.post(`${Constants.API_URL}/issues`, issue, {
@@ -34,7 +34,7 @@ export async function createIssue(token: string, issue: Partial<Issue>)
 				"Authorization": `Bearer ${token}`,
 			},
 		});
-		console.log('Issue created : ', response.data);
+		console.log('Create Issue Response : ', response);
 		return response.data as Issue;
 	}
 	catch (error)

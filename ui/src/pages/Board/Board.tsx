@@ -229,11 +229,9 @@ export function Board()
 		recentlyUpdated: boolean
 	)
 	{
-		console.log('searchTerm : ', searchTerm);
 		let currentUserId = (JSON.parse(localStorage.getItem("user")) as User).id;
 		let filteredIssues = issues.filter((i) =>
 		{
-			console.log('Issue title : ', i.title);
 			let matchesSearch = i.title.toLowerCase().includes(searchTerm.toLowerCase());
 			let isAssignedToSelectedUsers = selectedUsers.length === 0 || _.intersection(i.userIds, selectedUsers).length > 0;
 			let isAssignedToMe = i.userIds.includes(currentUserId);
