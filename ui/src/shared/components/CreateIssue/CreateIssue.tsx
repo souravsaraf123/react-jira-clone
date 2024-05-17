@@ -225,7 +225,6 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 					value={newIssue.description}
 					onChange={(value: string) =>
 					{
-						console.log('Issue desc updated : ', value);
 						setNewIssue({ ...newIssue, description: value });
 					}}
 					className="description_editor"

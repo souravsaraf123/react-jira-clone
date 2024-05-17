@@ -4,6 +4,11 @@ import { Constants } from "../Constants";
 import axios from "axios";
 import { handleApiError } from "../utils";
 
+function delay(ms: number)
+{
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export async function updateIssues(token: string, issues: Partial<Issue>[])
 {
 	console.log('Updating issues : ', issues);
@@ -63,7 +68,7 @@ export async function getIssue(token: string, issueId: number): Promise<IssueWit
 	}
 }
 
-export async function updateIssue(token: string, issueId: number, issue: Partial<Issue>)
+export async function updateIssue(token: string, issueId: number, issue: Partial<IssueWithUsersAndComments>)
 {
 	console.log('Updating issue : ', issueId, issue);
 	try

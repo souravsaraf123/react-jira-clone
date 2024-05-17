@@ -1,0 +1,19 @@
+.issue_details_container {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-gap: 1rem;
+	overflow-y: auto;
+}
+
+.issue_header {
+	display: flex;
+	align-items: center;
+}
+
+.issue_details {
+	display: grid;
+	grid-template-columns: 7fr 3fr;
+	grid-gap: 1rem;
+}

@@ -30,7 +30,7 @@ export const getIssueWithUsersAndComments = catchErrors(async (req, res: any) =>
 	const issue = await findEntityOrThrow(Issue, req.params.issueId, {
 		relations: ['users', 'comments', 'comments.user'],
 	});
-	res.respond({ issue });
+	res.respond(issue);
 });
 
 export const create = catchErrors(async (req, res: any) =>
@@ -59,7 +59,7 @@ export const create = catchErrors(async (req, res: any) =>
 export const update = catchErrors(async (req, res: any) =>
 {
 	const issue = await updateEntity(Issue, req.params.issueId, req.body);
-	res.respond({ issue });
+	res.respond(issue);
 });
 
 export const updateMultiple = catchErrors(async (req, res: any) =>

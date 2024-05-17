@@ -34,6 +34,14 @@ const router = createBrowserRouter([
 						path: "createIssue",
 						element: <Board />,
 					},
+					{
+						path: "issues",
+						element: <Board />,
+					},
+					{
+						path: "issues/:issueId",
+						element: <Board />,
+					},
 				],
 			},
 			{

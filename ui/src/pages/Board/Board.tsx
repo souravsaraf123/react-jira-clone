@@ -19,6 +19,7 @@ import { Breadcrumb } from "../../shared/components/Breadcrumb/Breadcrumb";
 import { CreateIssue } from "../../shared/components/CreateIssue/CreateIssue";
 import { GithubLink } from "../../shared/components/GithubLink/GithubLink";
 import { IssueCard } from "../../shared/components/IssueCard/IssueCard";
+import { IssueDetails } from "../../shared/components/IssueDetails/IssueDetails";
 import { ProjectWithDetailsContext } from "../../App";
 import ReactModal from "react-modal";
 import { User } from "../../shared/models/user.model";
@@ -72,8 +73,12 @@ export function Board()
 	console.log("Pathname : ", location.pathname);
 	let lastSegment = location.pathname.split("/").pop();
 
-	// Modal Is Open
-	let isOpen = lastSegment === "createIssue";
+	// Create Issue Modal Is Open
+	let createIssueModalIsOpen = (lastSegment === "createIssue");
+
+	// Issue Details Modal Is Open
+	let issueDetailsModalIsOpen = /\/board\/issues\/\d+/g.test(location.pathname);
+	console.log("Issue Details Modal Is Open : ", issueDetailsModalIsOpen);
 
 	function groupIssuesByStatus(issues: Issue[])
 	{
@@ -103,7 +108,6 @@ export function Board()
 
 	async function handleDragEnd(result: DropResult)
 	{
-		// TODO: implement later
 		console.log(result);
 
 		// If the user cancels the drag
@@ -389,7 +393,7 @@ export function Board()
 
 			{/* Create Issue Modal */}
 			<ReactModal
-				isOpen={isOpen}
+				isOpen={createIssueModalIsOpen}
 				appElement={document.getElementById("root") as HTMLElement}
 				shouldCloseOnEsc={true}
 				onRequestClose={() => navigate("/board")}
@@ -415,6 +419,31 @@ export function Board()
 					issues={issues}
 					setIssues={setIssues}>
 				</CreateIssue>
+			</ReactModal>
+
+			{/* Issue Details Modal */}
+			<ReactModal
+				isOpen={issueDetailsModalIsOpen}
+				appElement={document.getElementById("root") as HTMLElement}
+				shouldCloseOnEsc={true}
+				onRequestClose={() => navigate("/board")}
+				style={{
+					overlay: {
+						backgroundColor: "rgba(0, 0, 0, 0.5)",
+					},
+					content: {
+						top: "1em",
+						left: "50%",
+						right: "auto",
+						bottom: "1em",
+						transform: "translateX(-50%)",
+						maxWidth: "60rem",
+						width: "90%",
+						padding: "1em 1.5em",
+					},
+				}}
+			>
+				<IssueDetails users={projectDetails.users} issues={issues} setIssues={setIssues}></IssueDetails>
 			</ReactModal>
 		</>
 	);
