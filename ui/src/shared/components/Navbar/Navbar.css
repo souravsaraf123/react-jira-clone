@@ -45,7 +45,7 @@
 		}
 
 		&:hover {
-			cursor: not-allowed;
+			cursor: not-allowed !important;
 			& > p {
 				display: none;
 			}

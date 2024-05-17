@@ -1,6 +1,7 @@
 import { createEntity, deleteEntity, findEntityOrThrow, updateEntity } from './../utils/typeorm';
 
 import { Issue } from './../entities/index';
+import { IssueStatus } from './../constants/issues';
 import { catchErrors } from './../errors/index';
 import { getConnection } from 'typeorm';
 
@@ -34,9 +35,25 @@ export const getIssueWithUsersAndComments = catchErrors(async (req, res: any) =>
 
 export const create = catchErrors(async (req, res: any) =>
 {
-	const listPosition = await calculateListPosition(req.body);
-	const issue = await createEntity(Issue, { ...req.body, listPosition });
-	res.respond({ issue });
+	console.log('Create Issue Request : ', req.body);
+	let createIssueRequest: Partial<Issue> = req.body;
+
+	const listPosition = await calculateListPosition(createIssueRequest);
+	createIssueRequest.status = IssueStatus.BACKLOG;
+	createIssueRequest.listPosition = listPosition;
+
+	const issueCreated = await createEntity(Issue, createIssueRequest);
+
+	for (let userId of createIssueRequest.userIds)
+	{
+		await getConnection().createQueryBuilder().insert().into('issue_user').values({
+			issueId: issueCreated.id,
+			userId: userId,
+		}).execute();
+	}
+
+	issueCreated.userIds = createIssueRequest.userIds;
+	res.respond(issueCreated);
 });
 
 export const update = catchErrors(async (req, res: any) =>
@@ -73,17 +90,20 @@ export const remove = catchErrors(async (req, res: any) =>
 	res.respond({ issue });
 });
 
-const calculateListPosition = async ({ projectId, status }: Issue): Promise<number> =>
+const calculateListPosition = async ({ projectId, status }: Partial<Issue>): Promise<number> =>
 {
 	const issues = await Issue.find({
-		where: { projectId, status }
+		where: { projectId, status },
+		order: { listPosition: 'DESC' },
+		take: 1,
 	});
 
-	const listPositions = issues.map(({ listPosition }) => listPosition);
-
-	if (listPositions.length > 0)
+	if (issues.length == 0)
 	{
-		return Math.min(...listPositions) - 1;
+		return 0;
 	}
-	return 1;
+	else
+	{
+		return issues[0].listPosition + 1;
+	}
 };

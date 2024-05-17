@@ -42,17 +42,22 @@ export const IssuePriorityLabel = {
 
 export interface Issue
 {
-	id: number,
-	title: string,
-	description: string,
-	type: IssueType,
-	status: IssueStatus,
-	priority: IssuePriority,
-	listPosition: number,
-	createdAt: string,
-	updatedAt: string,
-	reporterId: number,
-	userIds: number[],
+	id: number;
+	title: string;
+	type: IssueType;
+	status: IssueStatus;
+	priority: IssuePriority;
+	listPosition: number;
+	description: string | null;
+	descriptionText: string | null;
+	estimate: number | null;
+	timeSpent: number | null;
+	timeRemaining: number | null;
+	createdAt: string;
+	updatedAt: string;
+	reporterId: number;
+	projectId: number;
+	userIds: number[];
 }
 
 export interface IssueWithUsersAndComments extends Issue

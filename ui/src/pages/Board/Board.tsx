@@ -1,8 +1,18 @@
 import "./Board.css";
 
-import { Button, ButtonPalette, ButtonSize } from "../../shared/components/Button/Button";
-import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-import { Issue, IssueStatus, IssueStatusOrdering } from "../../shared/models/issue.model";
+import
+{
+	Button,
+	ButtonPalette,
+	ButtonSize,
+} from "../../shared/components/Button/Button";
+import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import
+{
+	Issue,
+	IssueStatus,
+	IssueStatusOrdering,
+} from "../../shared/models/issue.model";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 import { Breadcrumb } from "../../shared/components/Breadcrumb/Breadcrumb";
@@ -10,7 +20,7 @@ import { CreateIssue } from "../../shared/components/CreateIssue/CreateIssue";
 import { GithubLink } from "../../shared/components/GithubLink/GithubLink";
 import { IssueCard } from "../../shared/components/IssueCard/IssueCard";
 import { ProjectWithDetailsContext } from "../../App";
-import ReactModal from 'react-modal';
+import ReactModal from "react-modal";
 import { User } from "../../shared/models/user.model";
 import _ from "lodash";
 import { updateIssues } from "../../shared/services/Issue.service";
@@ -28,7 +38,8 @@ const TWO_DAYS = 2 * 24 * 60 * 60 * 1000;
 export function Board()
 {
 	// Project State
-	let { project, projectDetails } = useOutletContext<ProjectWithDetailsContext>();
+	let { project, projectDetails } =
+		useOutletContext<ProjectWithDetailsContext>();
 
 	// Issues State
 	let [issues, setIssues] = useState(projectDetails.issues);
@@ -40,23 +51,36 @@ export function Board()
 	let [recentlyUpdated, setRecentlyUpdated] = useState(false);
 
 	// Local Variables
-	let userMap: Record<number, User> = _.keyBy(projectDetails.users, (u) => u.id);
-	let filteredIssues = searchAndFilter(issues, searchTerm, selectedUsers, onlyMyIssues, recentlyUpdated);
+	let userMap: Record<number, User> = _.keyBy(
+		projectDetails.users,
+		(u) => u.id
+	);
+	let filteredIssues = searchAndFilter(
+		issues,
+		searchTerm,
+		selectedUsers,
+		onlyMyIssues,
+		recentlyUpdated
+	);
 	let issuesGroupedByStatus = groupIssuesByStatus(filteredIssues);
-	let isAnyFilterApplied = searchTerm || selectedUsers.length > 0 || onlyMyIssues || recentlyUpdated;
+	let isAnyFilterApplied =
+		searchTerm || selectedUsers.length > 0 || onlyMyIssues || recentlyUpdated;
 
 	// Route Location & Navigations
 	const location = useLocation();
 	let navigate = useNavigate();
-	console.log('Pathname : ', location.pathname);
-	let lastSegment = location.pathname.split('/').pop();
+	console.log("Pathname : ", location.pathname);
+	let lastSegment = location.pathname.split("/").pop();
 
 	// Modal Is Open
-	let isOpen = (lastSegment === "createIssue");
+	let isOpen = lastSegment === "createIssue";
 
 	function groupIssuesByStatus(issues: Issue[])
 	{
-		let issuesGroupedByStatus = _.groupBy(issues, (i) => i.status) as Record<IssueStatus, Issue[]>;
+		let issuesGroupedByStatus = _.groupBy(issues, (i) => i.status) as Record<
+			IssueStatus,
+			Issue[]
+		>;
 
 		for (let i = 1; i <= Object.values(IssueStatus).length; i++)
 		{
@@ -64,10 +88,13 @@ export function Board()
 			if (!issuesGroupedByStatus[status])
 			{
 				issuesGroupedByStatus[status] = [];
-			}
-			else
+			} else
 			{
-				issuesGroupedByStatus[status] = _.orderBy(issuesGroupedByStatus[status], (i) => i.listPosition, 'asc');
+				issuesGroupedByStatus[status] = _.orderBy(
+					issuesGroupedByStatus[status],
+					(i) => i.listPosition,
+					"asc"
+				);
 			}
 		}
 
@@ -92,7 +119,8 @@ export function Board()
 		}
 
 		// If the user drops the draggable back to its original position
-		if (result.source.droppableId === result.destination.droppableId &&
+		if (
+			result.source.droppableId === result.destination.droppableId &&
 			result.source.index === result.destination.index
 		)
 		{
@@ -105,31 +133,41 @@ export function Board()
 		let clonedIssues = structuredClone(issues);
 		let issuesGroupedByStatus = groupIssuesByStatus(clonedIssues);
 		let draggedIssue = issuesGroupedByStatus[sourceStatus][result.source.index];
-		console.log('Grouped Issues Initially : ', structuredClone(issuesGroupedByStatus));
+		console.log(
+			"Grouped Issues Initially : ",
+			structuredClone(issuesGroupedByStatus)
+		);
 
 		// Delete the issue from the source column , update list positions of all items below the dragged item
 		issuesGroupedByStatus[sourceStatus].splice(result.source.index, 1);
 
 		draggedIssue.status = destinationStatus;
-		issuesGroupedByStatus[destinationStatus].splice(result.destination.index, 0, draggedIssue);
+		issuesGroupedByStatus[destinationStatus].splice(
+			result.destination.index,
+			0,
+			draggedIssue
+		);
 
 		// New UI State
-		let pos = 0;
-		let newIssues: Issue[] = _.orderBy(Object.values(issuesGroupedByStatus).flat(), i => i.id);
+		let newIssues: Issue[] = _.orderBy(
+			Object.values(issuesGroupedByStatus).flat(),
+			(i) => i.id
+		);
 		for (let i = 1; i < Object.values(IssueStatus).length; i++)
 		{
+			let pos = 0;
 			let status = IssueStatusOrdering[i];
 			for (let issue of issuesGroupedByStatus[status])
 			{
-				pos++;
 				issue.listPosition = pos;
+				pos++;
 			}
 		}
 
-		console.log('Grouped Issues Finally : ', issuesGroupedByStatus);
+		console.log("Grouped Issues Finally : ", issuesGroupedByStatus);
 
 		// Prepare payload for API
-		let oldIssuesCopy = _.orderBy(structuredClone(issues), i => i.id);
+		let oldIssuesCopy = _.orderBy(structuredClone(issues), (i) => i.id);
 		for (let i = 0; i < newIssues.length; i++)
 		{
 			let newIssue = newIssues[i];
@@ -159,11 +197,10 @@ export function Board()
 
 		try
 		{
-			console.log('Payload for API : ', payloadForApi);
+			console.log("Payload for API : ", payloadForApi);
 			let token = localStorage.getItem("token");
 			await updateIssues(token, payloadForApi);
-		}
-		catch (error)
+		} catch (error)
 		{
 			console.error(error);
 			alert("Failed to update issues. Please try again later.");
@@ -176,25 +213,39 @@ export function Board()
 	{
 		if (selectedUsers.includes(id))
 		{
-			setSelectedUsers(selectedUsers.filter(u => u !== id));
-		}
-		else
+			setSelectedUsers(selectedUsers.filter((u) => u !== id));
+		} else
 		{
 			setSelectedUsers([...selectedUsers, id]);
 		}
 	}
 
 	// Search and filter issues
-	function searchAndFilter(issues: Issue[], searchTerm: string, selectedUsers: number[], onlyMyIssues: boolean, recentlyUpdated: boolean)
+	function searchAndFilter(
+		issues: Issue[],
+		searchTerm: string,
+		selectedUsers: number[],
+		onlyMyIssues: boolean,
+		recentlyUpdated: boolean
+	)
 	{
+		console.log('searchTerm : ', searchTerm);
 		let currentUserId = (JSON.parse(localStorage.getItem("user")) as User).id;
-		let filteredIssues = issues.filter(i =>
+		let filteredIssues = issues.filter((i) =>
 		{
+			console.log('Issue title : ', i.title);
 			let matchesSearch = i.title.toLowerCase().includes(searchTerm.toLowerCase());
 			let isAssignedToSelectedUsers = selectedUsers.length === 0 || _.intersection(i.userIds, selectedUsers).length > 0;
 			let isAssignedToMe = i.userIds.includes(currentUserId);
-			let isRecentlyUpdated = recentlyUpdated ? Date.parse(i.updatedAt) > Date.now() - TWO_DAYS : true;
-			return matchesSearch && isAssignedToSelectedUsers && (onlyMyIssues ? isAssignedToMe : true) && isRecentlyUpdated;
+			let isRecentlyUpdated = recentlyUpdated
+				? Date.parse(i.updatedAt) > Date.now() - TWO_DAYS
+				: true;
+			return (
+				matchesSearch &&
+				isAssignedToSelectedUsers &&
+				(onlyMyIssues ? isAssignedToMe : true) &&
+				isRecentlyUpdated
+			);
 		});
 		return filteredIssues;
 	}
@@ -210,16 +261,24 @@ export function Board()
 					<div
 						className="status_container"
 						{...provided.droppableProps}
-						ref={provided.innerRef}>
-						<p className="status_title">{statusTextMap[status]} {currentIssues.length}</p>
-						{
-							_.orderBy(currentIssues, (i) => i.listPosition, 'asc').map((iss, index) =>
+						ref={provided.innerRef}
+					>
+						<p className="status_title">
+							{statusTextMap[status]} {currentIssues.length}
+						</p>
+						{_.orderBy(currentIssues, (i) => i.listPosition, "asc").map(
+							(iss, index) =>
 							{
 								return (
-									<IssueCard index={index} issue={iss} userMap={userMap} key={iss.id} />
+									<IssueCard
+										index={index}
+										issue={iss}
+										userMap={userMap}
+										key={iss.id}
+									/>
 								);
-							})
-						}
+							}
+						)}
 						{provided.placeholder}
 					</div>
 				)}
@@ -228,53 +287,54 @@ export function Board()
 	}
 
 	return (
-
 		<>
 			{/* Kanban Board */}
 			<DragDropContext onDragEnd={handleDragEnd}>
 				<div className="board_container">
-
 					{/* Header Container */}
 					<div>
-
 						{/* Breadcrumb */}
 						<Breadcrumb project={project} lastPage="Kanban Board" />
 
 						{/* Title Container */}
 						<div style={{ display: "flex", justifyContent: "space-between" }}>
-
 							{/* Title */}
 							<span className="title">Kanban Board</span>
 
 							{/* Github Link */}
 							<GithubLink />
-
 						</div>
-
 					</div>
 
 					{/* Search & Filter Container */}
 					<div className="search_filter_container">
-
 						{/* Search Input */}
 						<input
 							className="form_input search_input"
 							placeholder="Search Issue Title"
 							type="search"
 							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)} />
+							onChange={(e) => setSearchTerm(e.target.value)}
+						/>
 
 						{/* Users */}
 						<div>
-							{projectDetails.users.map(u =>
+							{projectDetails.users.map((u) =>
 							{
 								return (
 									<button
 										key={u.id}
 										title={u.name}
-										className={`user_button ${selectedUsers.includes(u.id) ? "selected" : ""}`}
-										onClick={() => toggleSelectedUser(u.id)}>
-										<img src={u.avatarUrl} alt={u.name} height="32px" width="32px" />
+										className={`user_button ${selectedUsers.includes(u.id) ? "selected" : ""
+											}`}
+										onClick={() => toggleSelectedUser(u.id)}
+									>
+										<img
+											src={u.avatarUrl}
+											alt={u.name}
+											height="32px"
+											width="32px"
+										/>
 									</button>
 								);
 							})}
@@ -284,8 +344,11 @@ export function Board()
 						<Button
 							palette={ButtonPalette.ghost}
 							size={ButtonSize.small}
-							className={"issue_filter_button" + `${onlyMyIssues ? " active" : ""}`}
-							onClick={() => setOnlyMyIssues(!onlyMyIssues)}>
+							className={
+								"issue_filter_button" + `${onlyMyIssues ? " active" : ""}`
+							}
+							onClick={() => setOnlyMyIssues(!onlyMyIssues)}
+						>
 							Only My Issues
 						</Button>
 
@@ -293,15 +356,18 @@ export function Board()
 						<Button
 							palette={ButtonPalette.ghost}
 							size={ButtonSize.small}
-							className={"issue_filter_button" + `${recentlyUpdated ? " active" : ""}`}
-							onClick={() => setRecentlyUpdated(!recentlyUpdated)}>
+							className={
+								"issue_filter_button" + `${recentlyUpdated ? " active" : ""}`
+							}
+							onClick={() => setRecentlyUpdated(!recentlyUpdated)}
+						>
 							Recently Updated
 						</Button>
 
 						{isAnyFilterApplied && <div className="vr"></div>}
 
 						{/* Clear All */}
-						{isAnyFilterApplied &&
+						{isAnyFilterApplied && (
 							<Button
 								palette={ButtonPalette.ghost}
 								size={ButtonSize.small}
@@ -311,44 +377,47 @@ export function Board()
 									setSelectedUsers([]);
 									setOnlyMyIssues(false);
 									setRecentlyUpdated(false);
-								}}>
+								}}
+							>
 								Clear All
-							</Button>}
-
+							</Button>
+						)}
 					</div>
 
 					{/* Issues Board */}
-					<div className="issues_board">
-						{statusColumns}
-					</div>
-
+					<div className="issues_board">{statusColumns}</div>
 				</div>
 			</DragDropContext>
 
 			{/* Create Issue Modal */}
 			<ReactModal
 				isOpen={isOpen}
-				appElement={document.getElementById('root') as HTMLElement}
+				appElement={document.getElementById("root") as HTMLElement}
 				shouldCloseOnEsc={true}
-				onRequestClose={() => navigate('/board')}
+				onRequestClose={() => navigate("/board")}
 				style={{
 					overlay: {
-						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						backgroundColor: "rgba(0, 0, 0, 0.5)",
 					},
 					content: {
-						top: '2em',
-						left: '50%',
-						right: 'auto',
-						bottom: '2em',
-						transform: 'translateX(-50%)',
-						maxWidth: '50rem',
-						width: '90%',
-						padding: '1.5em 2.5em',
+						top: "2em",
+						left: "50%",
+						right: "auto",
+						bottom: "2em",
+						transform: "translateX(-50%)",
+						maxWidth: "50rem",
+						width: "90%",
+						padding: "1.5em 2.5em",
 					},
-				}}>
-				<CreateIssue users={projectDetails.users}></CreateIssue>
+				}}
+			>
+				<CreateIssue
+					projectId={projectDetails.project.id}
+					users={projectDetails.users}
+					issues={issues}
+					setIssues={setIssues}>
+				</CreateIssue>
 			</ReactModal>
-
 		</>
 	);
 }

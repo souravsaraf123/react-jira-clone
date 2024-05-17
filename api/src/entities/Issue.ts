@@ -93,7 +93,7 @@ class Issue extends BaseEntity
 		() => User,
 		user => user.issues,
 	)
-	@JoinTable()
+	@JoinTable({ name: 'issue_user' })
 	users: User[];
 
 	@RelationId((issue: Issue) => issue.users)

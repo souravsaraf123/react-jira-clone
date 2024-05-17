@@ -53,6 +53,7 @@ export const Button = forwardRef((props: ButtonProps, ref?: React.Ref<HTMLButton
 	} = props;
 
 	let styleViaProps: {
+		cursor: string,
 		color: string,
 		backgroundColor: string,
 		borderColor: string,
@@ -64,6 +65,7 @@ export const Button = forwardRef((props: ButtonProps, ref?: React.Ref<HTMLButton
 		paddingBlock: string,
 		borderRadius: string,
 	} = {
+		cursor: "pointer",
 		color: "",
 		backgroundColor: "",
 		borderColor: "",

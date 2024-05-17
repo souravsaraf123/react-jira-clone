@@ -3,7 +3,8 @@ import "./CreateIssue.css";
 import { Button, ButtonFilled, ButtonPalette, ButtonSize } from "../Button/Button";
 import { Controller, useForm } from "react-hook-form";
 import { Issue, IssuePriority, IssuePriorityLabel, IssueType, issueTypeOptions } from "../../models/issue.model";
-import Select, { MultiValue, SingleValueProps, components } from "react-select";
+import Select, { GroupBase, MultiValue, MultiValueGenericProps, SingleValueProps, components } from "react-select";
+import { getIssuePriorityIcon, getIssueTypeIcon } from "../IssueCard/IssueCard";
 
 import { DropdownOption } from "../../models/dropdownOption.model";
 import { RichTextEditor } from "../RichTextEditor/RichTextEditor";
@@ -11,7 +12,6 @@ import { Spinner } from "../Spinner/Spinner";
 import { User } from "../../models/user.model";
 import _ from "lodash";
 import { createIssue } from "../../services/Issue.service";
-import { getIssueTypeIcon } from "../IssueCard/IssueCard";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -19,7 +19,6 @@ import { useState } from "react";
 export const IssueTypeOption = (x: any) =>
 {
 	let { children, ...props } = x;
-	console.log('IssueTypeOption x : ', x);
 	return (
 		<components.Option {...props} className="dropdown_option_with_image">
 			{getIssueTypeIcon(props.data.value as IssueType)}
@@ -28,9 +27,8 @@ export const IssueTypeOption = (x: any) =>
 	);
 };
 
-const IssueTypeSingleValue = ({ children, ...props }: SingleValueProps<DropdownOption>) =>
+export const IssueTypeSingleValue = ({ children, ...props }: SingleValueProps<DropdownOption>) =>
 {
-	console.log('SingleValue props : ', props);
 	return (
 		<components.SingleValue {...props} className="dropdown_option_with_image">
 			{getIssueTypeIcon(props.data.value as IssueType)}
@@ -39,19 +37,61 @@ const IssueTypeSingleValue = ({ children, ...props }: SingleValueProps<DropdownO
 	);
 };
 
-// const IssueTypeControl = (x: ControlProps<DropdownOption, false>) =>
-// {
-// 	let { children, ...props } = x;
-// 	console.log('IssueTypeComponent x : ', x);
-// 	return (
-// 		<components.Control {...props} className="dropdown_option_with_image">
-// 			{getIssueTypeIcon(props?.selectProps?.name as IssueType)}
-// 			{children}
-// 		</components.Control>
-// 	);
-// };
 
-export function CreateIssue(prop: { users: User[] })
+export const IssuePriorityOption = (x: any) =>
+{
+	let { children, ...props } = x;
+	return (
+		<components.Option {...props} className="dropdown_option_with_image">
+			{getIssuePriorityIcon(props.data.value as IssuePriority)}
+			{children}
+		</components.Option>
+	);
+};
+
+export const IssuePrioritySingleValue = ({ children, ...props }: SingleValueProps<DropdownOption>) =>
+{
+	return (
+		<components.SingleValue {...props} className="dropdown_option_with_image">
+			{getIssuePriorityIcon(props.data.value as IssuePriority)}
+			{children}
+		</components.SingleValue>
+	);
+};
+
+export const ReporterOption = (x: any) =>
+{
+	let { children, ...props } = x;
+	return (
+		<components.Option {...props} className="dropdown_option_with_image">
+			<img src={props.data.imageUrl} height={24} width={24} alt={props.data.label} className="user_avatar" />
+			{children}
+		</components.Option>
+	);
+};
+
+export const ReporterSingleValue = ({ children, ...props }: SingleValueProps<DropdownOption>) =>
+{
+	return (
+		<components.SingleValue {...props} className="dropdown_option_with_image">
+			<img src={props.data.imageUrl} height={24} width={24} alt={props.data.label} className="user_avatar" />
+			{children}
+		</components.SingleValue>
+	);
+};
+
+export const AssigneeMultiValue = ({ children, ...props }: MultiValueGenericProps<DropdownOption, true, GroupBase<DropdownOption>>) =>
+{
+	props.innerProps.className = 'dropdown_option_with_image';
+	return (
+		<components.MultiValueLabel {...props}>
+			<img src={props.data.imageUrl} height={24} width={24} alt={props.data.label} className="user_avatar" />
+			{children}
+		</components.MultiValueLabel>
+	);
+};
+
+export function CreateIssue(prop: { projectId: number, users: User[], issues: Issue[], setIssues: React.Dispatch<React.SetStateAction<Issue[]>> })
 {
 	let [saving, setSaving] = useState(false);
 	let [newIssue, setNewIssue] = useState<Partial<Issue>>({
@@ -61,6 +101,7 @@ export function CreateIssue(prop: { users: User[] })
 		reporterId: prop.users[0].id,
 		userIds: [],
 		priority: IssuePriority.medium,
+		projectId: prop.projectId,
 	});
 
 	// Route Navigation Hook
@@ -84,7 +125,8 @@ export function CreateIssue(prop: { users: User[] })
 	{
 		return {
 			value: u.id.toString(),
-			label: u.name
+			label: u.name,
+			imageUrl: u.avatarUrl,
 		};
 	});
 	let assigneeOptions = _.cloneDeep(reporterDropdownOptions);
@@ -101,16 +143,21 @@ export function CreateIssue(prop: { users: User[] })
 		try
 		{
 			let token = localStorage.getItem('token');
-			await createIssue(token, newIssue);
+			let issueCreated = await createIssue(token, newIssue);
 			toast("Issue created successfully", {
 				type: "success",
 				theme: "colored",
 			});
+			console.log('New Issue created successfully : ', issueCreated);
+			let newIssues = [...prop.issues, issueCreated];
+			console.log('Reloading board with new issues : ', newIssues);
+			prop.setIssues(newIssues);
+			navigate('/board');
 		}
 		catch (error: any)
 		{
 			let errorMessage = error?.message || JSON.stringify(error, null, 4);
-			alert('Error updating project\n' + errorMessage);
+			alert('Error creating issue \n' + errorMessage);
 		}
 		finally
 		{
@@ -150,7 +197,7 @@ export function CreateIssue(prop: { users: User[] })
 						/>
 					)}
 				/>
-				{errors.type && <span className="form_error_msg">This field is required</span>}
+				{errors.type && <span className="form_error_msg">Issue type is required</span>}
 			</label>
 
 			{/* divider */}
@@ -168,7 +215,7 @@ export function CreateIssue(prop: { users: User[] })
 					onChange={(e) => setNewIssue({ ...newIssue, title: e.target.value })}
 				/>
 				<p className="form_label helper">Concisely summarize the issue in one or two sentences.</p>
-				{errors.title && <span className="form_error_msg">This field is required</span>}
+				{errors.title && <span className="form_error_msg">Title is required</span>}
 			</label>
 
 			{/* Description */}
@@ -193,20 +240,23 @@ export function CreateIssue(prop: { users: User[] })
 						<Select
 							{...field}
 							{...register('reporterId')}
+							components={{ Option: ReporterOption, SingleValue: ReporterSingleValue }}
+							hideSelectedOptions={true}
 							className="basic-single"
 							classNamePrefix="select"
 							isSearchable={true}
 							options={reporterDropdownOptions}
 							value={reporterDropdownOptions.find((u) => Number(u.value) === newIssue.reporterId)}
-							onChange={(selectedOption: DropdownOption) =>
+							onChange={(selected: any) =>
 							{
+								let selectedOption: DropdownOption = selected;
 								field.onChange(selectedOption.value);
 								setNewIssue({ ...newIssue, reporterId: Number(selectedOption?.value) })
 							}}
 						/>
 					)}
 				/>
-				{errors.type && <span className="form_error_msg">This field is required</span>}
+				{errors.reporterId && <span className="form_error_msg">Reporter is required</span>}
 			</label>
 
 			{/* Assignee */}
@@ -220,6 +270,7 @@ export function CreateIssue(prop: { users: User[] })
 						<Select
 							{...field}
 							{...register('userIds')}
+							components={{ Option: ReporterOption, MultiValueLabel: AssigneeMultiValue }}
 							className="basic-single"
 							classNamePrefix="select"
 							isSearchable={true}
@@ -235,7 +286,7 @@ export function CreateIssue(prop: { users: User[] })
 						/>
 					)}
 				/>
-				{errors.type && <span className="form_error_msg">This field is required</span>}
+				{errors.userIds && <span className="form_error_msg">Assignees is required</span>}
 			</label>
 
 			{/* Priority */}
@@ -249,13 +300,16 @@ export function CreateIssue(prop: { users: User[] })
 						<Select
 							{...field}
 							{...register('priority')}
+							components={{ Option: IssuePriorityOption, SingleValue: IssuePrioritySingleValue }}
+							hideSelectedOptions={true}
 							className="basic-single"
 							classNamePrefix="select"
 							isSearchable={true}
 							options={priorityOptions}
 							value={priorityOptions.find((p) => p.value === newIssue.priority)}
-							onChange={(selectedOption: DropdownOption) =>
+							onChange={(selected: any) =>
 							{
+								let selectedOption: DropdownOption = selected;
 								field.onChange(selectedOption.value);
 								setNewIssue({ ...newIssue, priority: Number(selectedOption?.value) as unknown as IssuePriority })
 							}}
@@ -263,7 +317,7 @@ export function CreateIssue(prop: { users: User[] })
 					)}
 				/>
 				<p className="form_label helper">Priority in relation to other issues.</p>
-				{errors.type && <span className="form_error_msg">This field is required</span>}
+				{errors.priority && <span className="form_error_msg">Priority is required</span>}
 			</label>
 
 			{/* Buttons */}

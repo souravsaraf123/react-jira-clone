@@ -35,6 +35,7 @@ export async function createIssue(token: string, issue: Partial<Issue>)
 			},
 		});
 		console.log('Issue created : ', response.data);
+		return response.data as Issue;
 	}
 	catch (error)
 	{
