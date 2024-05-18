@@ -80,6 +80,7 @@ export async function updateIssue(token: string, issueId: number, issue: Partial
 			},
 		});
 		console.log('Update issue response : ', response.data);
+		return response.data as Issue;
 	}
 	catch (error)
 	{

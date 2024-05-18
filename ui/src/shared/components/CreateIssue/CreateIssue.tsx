@@ -115,8 +115,6 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 		defaultValues: newIssue,
 	});
 
-	console.log('Current State of newIssue : ', newIssue);
-
 	let handleCloseModal = () =>
 	{
 		navigate('/board');
@@ -141,7 +139,6 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 	let onFormSubmit = async () =>
 	{
 		setSaving(true);
-		console.log('Form submitted with data as : ', newIssue);
 		try
 		{
 			let token = localStorage.getItem('token');
@@ -314,7 +311,7 @@ export function CreateIssue(prop: { projectId: number, users: User[], issues: Is
 							{
 								let selectedOption: DropdownOption = selected;
 								field.onChange(selectedOption.value);
-								setNewIssue({ ...newIssue, priority: Number(selectedOption?.value) as unknown as IssuePriority })
+								setNewIssue({ ...newIssue, priority: selectedOption?.value as unknown as IssuePriority })
 							}}
 						/>
 					)}

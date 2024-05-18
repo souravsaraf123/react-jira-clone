@@ -1,0 +1,42 @@
+.issue_type_select {
+	cursor: pointer;
+	min-width: 8rem;
+	font-size: var(--fzSmallest);
+
+	& .select__control {
+		border: none;
+	}
+	& .select__control:hover {
+		background-color: var(--backgroundLight);
+		border: none !important;
+		box-shadow: none;
+	}
+
+	& .select__single-value {
+		color: var(--textMedium);
+	}
+
+	& .select__control:focus-visible,
+	& .select__control:focus {
+		outline: none;
+		border: none;
+	}
+
+	&:focus-visible,
+	&:focus {
+		outline: none;
+		border: none;
+	}
+
+	& .select__value-container:focus-visible,
+	& .select__value-container:focus {
+		outline: none;
+		border: none;
+	}
+
+	& .select__input-container:focus-visible,
+	& .select__input-container:focus {
+		outline: none;
+		border: none;
+	}
+}
