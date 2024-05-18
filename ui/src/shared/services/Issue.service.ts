@@ -11,7 +11,7 @@ function delay(ms: number)
 
 export async function updateIssues(token: string, issues: Partial<Issue>[])
 {
-	console.log('Updating issues : ', issues);
+	console.log('Update multiple issues request : ', issues);
 	try
 	{
 		let response = await axios.put(`${Constants.API_URL}/issues`, issues, {
@@ -20,7 +20,7 @@ export async function updateIssues(token: string, issues: Partial<Issue>[])
 				"Authorization": `Bearer ${token}`,
 			},
 		});
-		console.log('Issues updated : ', response.data);
+		console.log('Update multiple issues response : ', response.data);
 	}
 	catch (error)
 	{
@@ -30,7 +30,7 @@ export async function updateIssues(token: string, issues: Partial<Issue>[])
 
 export async function createIssue(token: string, issue: Partial<Issue>)
 {
-	console.log('Creating issue from request : ', issue);
+	console.log('Create issue request : ', issue);
 	try
 	{
 		let response = await axios.post(`${Constants.API_URL}/issues`, issue, {
@@ -50,7 +50,7 @@ export async function createIssue(token: string, issue: Partial<Issue>)
 
 export async function getIssue(token: string, issueId: number): Promise<IssueWithUsersAndComments>
 {
-	console.log('Getting issue : ', issueId);
+	console.log('Get issue by id request : ', issueId);
 	try
 	{
 		let response = await axios.get(`${Constants.API_URL}/issues/${issueId}`, {
@@ -59,7 +59,7 @@ export async function getIssue(token: string, issueId: number): Promise<IssueWit
 				"Authorization": `Bearer ${token}`,
 			},
 		});
-		console.log('Issue fetched : ', response.data);
+		console.log('Get issue response : ', response.data);
 		return response.data;
 	}
 	catch (error)
@@ -70,7 +70,7 @@ export async function getIssue(token: string, issueId: number): Promise<IssueWit
 
 export async function updateIssue(token: string, issueId: number, issue: Partial<IssueWithUsersAndComments>)
 {
-	console.log('Updating issue : ', issueId, issue);
+	console.log('Updating issue request : ', issueId, issue);
 	try
 	{
 		let response = await axios.put(`${Constants.API_URL}/issues/${issueId}`, issue, {
@@ -79,7 +79,27 @@ export async function updateIssue(token: string, issueId: number, issue: Partial
 				"Authorization": `Bearer ${token}`,
 			},
 		});
-		console.log('Issue updated : ', response.data);
+		console.log('Update issue response : ', response.data);
+	}
+	catch (error)
+	{
+		handleApiError(error);
+	}
+}
+
+// delete issue
+export async function deleteIssue(token: string, issueId: number)
+{
+	console.log('Delete issue request : ', issueId);
+	try
+	{
+		let response = await axios.delete(`${Constants.API_URL}/issues/${issueId}`, {
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			},
+		});
+		console.log('Delete issue response : ', response.data);
 	}
 	catch (error)
 	{

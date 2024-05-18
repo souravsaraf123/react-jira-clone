@@ -14,10 +14,8 @@ export async function getProjectDetails(token: string)
 				"Authorization": `Bearer ${token}`,
 			},
 		});
+		console.log('Project Details Api response : ', response.data);
 		let { users, issues, ...project } = (await response.data).project;
-		console.log('Project : ', project);
-		console.log('Users : ', users);
-		console.log('Issues : ', issues);
 
 		let projectDetails: ProjectDetails = {
 			project: project,

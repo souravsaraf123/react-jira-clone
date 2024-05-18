@@ -1,39 +1,69 @@
 import "./IssueDetails.css";
+// This import is necessary for module augmentation.
+// It allows us to extend the 'Props' interface in the 'react-select/base' module
+// and add our custom property 'myCustomProp' to it.
+import type { } from 'react-select/base';
 
+import { Button, ButtonFilled, ButtonPalette, ButtonSize } from "../Button/Button";
 import { Issue, IssuePriorityLabel, IssueType, IssueWithUsersAndComments, issueTypeOptions } from "../../models/issue.model";
-import { IssueTypeOption, IssueTypeSingleValue } from "../CreateIssue/CreateIssue";
-import { getIssue, updateIssue } from "../../services/Issue.service";
+import Select, { GroupBase, SingleValueProps, components } from "react-select";
+import { deleteIssue, getIssue, updateIssue } from "../../services/Issue.service";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
+import { About } from "../Sidebar/About/About";
+import ConfirmDeleteIssue from "../ConfirmDeleteIssue/ConfirmDeleteIssue";
 import { DropdownOption } from "../../models/dropdownOption.model";
-import Select from "react-select";
+import { IssueTypeOption } from "../CreateIssue/CreateIssue";
+import { Popover } from "react-tiny-popover";
+import ReactModal from "react-modal";
+import SVG from 'react-inlinesvg';
 import { Spinner } from "../Spinner/Spinner";
 import { User } from "../../models/user.model";
 import _ from "lodash";
+import { getIssueTypeIcon } from "../IssueCard/IssueCard";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+
+declare module 'react-select/base' {
+	export interface Props<
+		Option,
+		IsMulti extends boolean,
+		Group extends GroupBase<Option>
+	>
+	{
+		issueId?: number;
+	}
+}
+
+export const IssueTypeWithIdSingleValue = ({ children, ...props }: SingleValueProps<DropdownOption>) =>
+{
+	return (
+		<components.SingleValue {...props} className="dropdown_option_with_image">
+			{getIssueTypeIcon(props.data.value as IssueType)}
+			{`${props.data.value.toUpperCase()}-${props.selectProps.issueId}`}
+			{/* {children} */}
+			{/* <span style={{ marginLeft: '4px' }}>{props.selectProps.issueId}</span> */}
+		</components.SingleValue>
+	);
+};
 
 export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: React.Dispatch<React.SetStateAction<Issue[]>> })
 {
 	// initialize the component by calling the api route get issue id
 	useEffect(() =>
 	{
-		console.log('Issue Details UseEffect called');
 		// since useEffect can't be async, we define an async function inside it
 		let init = async () =>
 		{
 			try
 			{
 				// Call Api
-				console.log('Getting issue details by id : ', issueId);
 				let token = localStorage.getItem("token");
 				let issueDetailsResponse = await getIssue(token, Number(issueId));
 				setIssueDetails(issueDetailsResponse);
-				console.log('Got issue details by id : ', issueId, issueDetailsResponse);
 			}
 			catch (error: any)
 			{
-				console.error('Error while getting issue details : ', error);
 				let errorMsg = error?.message || JSON.stringify(error, null, 4);
 				toast(errorMsg, {
 					type: "error",
@@ -54,12 +84,15 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 
 	// Get the userId param from the URL.
 	let { issueId } = useParams();
-	console.log('Issue Id : ', issueId);
+	let navigate = useNavigate();
 
 	// State
 	let [issueDetails, setIssueDetails] = useState<IssueWithUsersAndComments | null>(null);
 	let [isLoading, setIsLoading] = useState<boolean>(true);
 	let [error, setError] = useState<any>(null);
+	let [copyLinkText, setCopyLinkText] = useState<string>('Copy Link');
+	let [issueDeleteModalIsOpen, setIssueDeleteModalIsOpen] = useState<boolean>(false);
+	let [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
 	async function updateIssueDetails(updatedIssueRequest: Partial<IssueWithUsersAndComments>)
 	{
@@ -69,7 +102,6 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 			// Call Api
 			let token = localStorage.getItem("token");
 			let updatedIssueResponse = await updateIssue(token, issueDetails.id, updatedIssueRequest);
-			console.log('Updated issue response : ', updatedIssueResponse);
 			let updatedIssueDetailsWithComments = {
 				...issueDetails,
 				...updatedIssueRequest,
@@ -98,6 +130,55 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 			});
 		}
 	}
+
+	const deleteIssueById = async () =>
+	{
+		try
+		{
+			// Call Api
+			let token = localStorage.getItem("token");
+			let deleteIssueResponse = await deleteIssue(token, issueDetails.id);
+
+			// toast
+			toast('Issue deleted successfully', {
+				type: "success",
+				theme: "colored",
+			});
+
+			// Update State for Board
+			let updatedIssues = prop.issues.filter((iss) => iss.id !== issueDetails.id);
+			prop.setIssues(updatedIssues);
+
+			// Navigate to board
+			navigate('/board');
+		}
+		catch (error: any)
+		{
+			// toast
+			console.error('Error while deleting issue : ', error);
+			let errorMsg = error?.message || JSON.stringify(error, null, 4);
+			let toastMsg = ['Failed to delete issue', errorMsg].filter(Boolean).join('\n');
+			toast(toastMsg, {
+				type: "error",
+				theme: "colored",
+			});
+		}
+	}
+
+	function copyLink()
+	{
+		navigator.clipboard.writeText(window.location.href);
+		setCopyLinkText('Link copied');
+		setTimeout(() =>
+		{
+			setCopyLinkText('Copy Link');
+		}, 2000);
+	}
+
+	let handleCloseModal = () =>
+	{
+		navigate('/board');
+	};
 
 	// Local Variables
 	let reporterDropdownOptions: DropdownOption[] = prop.users.map((u) =>
@@ -129,19 +210,23 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 		</div>
 	);
 
-	console.log('issueTypeOptions : ', issueTypeOptions);
-	console.log('loading : ', isLoading);
-	console.log('error : ', error);
-
 	let successState = issueDetails && (
 		<div className="issue_details_container">
 			<div className="issue_header">
+
+				{/* Issue Type */}
 				<Select
-					components={{ Option: IssueTypeOption, SingleValue: IssueTypeSingleValue }}
+					issueId={issueDetails.id}
+					components={{
+						Option: IssueTypeOption,
+						SingleValue: IssueTypeWithIdSingleValue,
+						DropdownIndicator: () => null,
+						IndicatorSeparator: () => null,
+					}}
 					hideSelectedOptions={true}
-					className="basic-single"
+					className="issue_type_select"
 					classNamePrefix="select"
-					isSearchable={true}
+					isSearchable={false}
 					options={issueTypeOptions}
 					value={issueTypeOptions.find((i) => i.value == issueDetails.type)}
 					onChange={(selected: any) =>
@@ -157,6 +242,88 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 					onMenuOpen={() => { }}
 					onMenuClose={() => { }}
 				/>
+
+				{/* Give feedback */}
+				<Popover
+					isOpen={isPopoverOpen}
+					onClickOutside={() => setIsPopoverOpen(false)}
+					positions={['bottom']}
+					align="center"
+					padding={10}
+					content={<About />}>
+					<Button
+						type="button"
+						filled={ButtonFilled.filled}
+						palette={ButtonPalette.ghost}
+						size={ButtonSize.small}
+						onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+						style={{ color: 'var(--textDark)', marginLeft: 'auto', }}>
+						<SVG src={"/src/assets/images/send.svg"} height={20} width={20} />
+						Give feedback
+					</Button>
+				</Popover>
+
+				{/* Copy link */}
+				<Button
+					type="button"
+					filled={ButtonFilled.filled}
+					palette={ButtonPalette.ghost}
+					size={ButtonSize.small}
+					style={{ color: 'var(--textDark)' }}
+					onClick={copyLink}>
+					<SVG src={"/src/assets/images/link.svg"} height={20} width={20} />
+					{copyLinkText}
+				</Button>
+
+				{/* Delete Issue */}
+				<Button
+					type="button"
+					filled={ButtonFilled.filled}
+					palette={ButtonPalette.ghost}
+					size={ButtonSize.small}
+					onClick={() => setIssueDeleteModalIsOpen(true)}>
+					<SVG src={"/src/assets/images/delete.svg"} height={20} width={20} />
+				</Button>
+				{/* Confirm Delete Modal */}
+				<ReactModal
+					isOpen={issueDeleteModalIsOpen}
+					appElement={document.getElementById("root") as HTMLElement}
+					shouldCloseOnEsc={true}
+					onRequestClose={() => navigate("/board")}
+					style={{
+						overlay: {
+							backgroundColor: "rgba(0, 0, 0, 0.5)",
+						},
+						content: {
+							top: "50%",
+							left: "50%",
+							right: "auto",
+							bottom: "auto",
+							transform: "translateX(-50%) translateY(-50%)",
+							width: "auto",
+							maxWidth: "60rem",
+							minWidth: "min(30rem, 100vw)",
+							minHeight: "10rem",
+							padding: "1em 1.5em",
+						},
+					}}>
+					<ConfirmDeleteIssue
+						issueId={issueDetails.id}
+						setIssueDeleteModalIsOpen={setIssueDeleteModalIsOpen}
+						deleteIssueFunction={deleteIssueById}>
+					</ConfirmDeleteIssue>
+
+				</ReactModal>
+
+				{/* Close Modal */}
+				<Button
+					type="button"
+					filled={ButtonFilled.filled}
+					palette={ButtonPalette.ghost}
+					size={ButtonSize.small}
+					onClick={handleCloseModal}>
+					<SVG src={"/src/assets/images/close.svg"} height={24} width={24} />
+				</Button>
 			</div>
 			<div className="issue_details">
 				<h1>{issueDetails.title}</h1>

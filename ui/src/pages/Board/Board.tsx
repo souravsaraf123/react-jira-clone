@@ -70,7 +70,6 @@ export function Board()
 	// Route Location & Navigations
 	const location = useLocation();
 	let navigate = useNavigate();
-	console.log("Pathname : ", location.pathname);
 	let lastSegment = location.pathname.split("/").pop();
 
 	// Create Issue Modal Is Open
@@ -78,7 +77,6 @@ export function Board()
 
 	// Issue Details Modal Is Open
 	let issueDetailsModalIsOpen = /\/board\/issues\/\d+/g.test(location.pathname);
-	console.log("Issue Details Modal Is Open : ", issueDetailsModalIsOpen);
 
 	function groupIssuesByStatus(issues: Issue[])
 	{

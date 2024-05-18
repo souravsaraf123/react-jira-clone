@@ -14,10 +14,10 @@ export function handleApiError(error: any)
 		if (error.response)
 		{
 			finalError = error.response.data?.error || error.response.data
-			console.error('Error while fetching project details : ', finalError);
+			console.error('Error in api response : ', finalError);
 			throw finalError;
 		}
 	}
-	console.error('Error while fetching project details : ', finalError);
+	console.error('Error in api response : ', finalError);
 	throw finalError;
 }

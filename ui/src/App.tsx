@@ -31,9 +31,6 @@ function App()
 			let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) as User : null;
 			let token = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 
-			console.log('User from localstorage : ', user);
-			console.log('Token from localstorage : ', token);
-
 			// if user or token is not present, seed data and get user, token in response, store the user and token in local storage
 			if (!user || !token)
 			{
@@ -59,9 +56,7 @@ function App()
 			// fetch project details
 			try
 			{
-				console.time('getProjectDetails');
 				let projectDetails = await getProjectDetails(token);
-				console.timeEnd('getProjectDetails');
 				setProjectDetails(projectDetails);
 				setProject(projectDetails.project);
 				setIsLoading(false);
