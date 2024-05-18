@@ -100,3 +100,9 @@ body {
 	font-size: var(--fzSmall);
 	padding-top: 4px;
 }
+
+.user_avatar {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+}

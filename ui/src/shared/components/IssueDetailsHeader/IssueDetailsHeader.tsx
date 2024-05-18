@@ -5,7 +5,7 @@ import { GroupBase, SingleValueProps, components } from "react-select";
 import { IssueType, IssueWithUsersAndComments, issueTypeOptions } from "../../models/issue.model";
 
 import { About } from "../Sidebar/About/About";
-import ConfirmDeleteIssue from "../ConfirmDeleteIssue/ConfirmDeleteIssue";
+import ConfirmDelete from "../ConfirmDeleteIssue/ConfirmDeleteIssue";
 import { DropdownOption } from "../../models/dropdownOption.model";
 import { IssueTypeOption } from "../CreateIssue/CreateIssue";
 import { Popover } from "react-tiny-popover";
@@ -137,6 +137,7 @@ export function IssueDetailsHeader(props: IssueDetailsHeaderProps)
 				onClick={() => setIssueDeleteModalIsOpen(true)}>
 				<SVG src={"/src/assets/images/delete.svg"} height={20} width={20} />
 			</Button>
+
 			{/* Confirm Delete Modal */}
 			<ReactModal
 				isOpen={issueDeleteModalIsOpen}
@@ -160,12 +161,11 @@ export function IssueDetailsHeader(props: IssueDetailsHeaderProps)
 						padding: "1em 1.5em",
 					},
 				}}>
-				<ConfirmDeleteIssue
-					issueId={issueDetails.id}
+				<ConfirmDelete
+					questionToAsk={`Are you sure you want to delete issue ${issueDetails.id} ?`}
 					setIssueDeleteModalIsOpen={setIssueDeleteModalIsOpen}
 					deleteIssueFunction={deleteIssueById}>
-				</ConfirmDeleteIssue>
-
+				</ConfirmDelete>
 			</ReactModal>
 
 			{/* Close Modal */}

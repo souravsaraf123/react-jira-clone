@@ -1,5 +1,6 @@
 import { DropdownOption } from "./dropdownOption.model";
 import { User } from "./user.model";
+import { UserComment } from "./userComment.model";
 
 export enum IssueType
 {
@@ -63,7 +64,7 @@ export interface Issue
 export interface IssueWithUsersAndComments extends Issue
 {
 	users: User[],
-	comments: Comment[],
+	comments: UserComment[],
 }
 
 // Convert the ProjectCategory enum to an array of objects for the Select component

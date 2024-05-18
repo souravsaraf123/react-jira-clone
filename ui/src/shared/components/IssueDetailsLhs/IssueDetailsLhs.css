@@ -1,0 +1,17 @@
+.lhs_issue_title {
+	padding: 0.25em;
+	font-family: var(--fontFamilyBlack);
+	font-size: var(--fzLargest);
+	color: var(--textDarkest);
+	border-color: transparent;
+	background-color: transparent;
+	resize: none;
+	margin-bottom: 0.5em;
+}
+
+.lhs_issue_description_editor {
+	margin-bottom: 0.75em;
+	& .ql-editor {
+		min-height: 8rem;
+	}
+}

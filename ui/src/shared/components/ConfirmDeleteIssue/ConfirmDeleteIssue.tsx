@@ -1,13 +1,13 @@
 import { Button, ButtonFilled, ButtonPalette, ButtonSize } from '../Button/Button';
 
-interface ConfirmDeleteIssueProps
+interface ConfirmDeleteProps
 {
-	issueId: number;
+	questionToAsk: string;
 	setIssueDeleteModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
 	deleteIssueFunction: () => void;
 }
 
-export function ConfirmDeleteIssue(props: ConfirmDeleteIssueProps)
+export function ConfirmDelete(props: ConfirmDeleteProps)
 {
 	const handleDelete = () =>
 	{
@@ -16,7 +16,7 @@ export function ConfirmDeleteIssue(props: ConfirmDeleteIssueProps)
 
 	return (
 		<div style={{ display: 'grid', gap: '1.5em' }}>
-			<p className="title">Are you sure you want to delete issue {props.issueId} ?</p>
+			<p className="title">{props.questionToAsk}</p>
 			<p>Once you delete, it's gone for good.</p>
 
 			<div style={{ display: 'flex', gap: '1em', 'justifyContent': 'flex-end' }}>
@@ -43,4 +43,4 @@ export function ConfirmDeleteIssue(props: ConfirmDeleteIssueProps)
 	);
 };
 
-export default ConfirmDeleteIssue;
+export default ConfirmDelete;

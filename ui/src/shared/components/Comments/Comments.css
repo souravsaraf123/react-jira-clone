@@ -1,0 +1,42 @@
+.add_comment_container {
+	width: 100%;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 1em;
+	align-items: flex-start;
+	margin-bottom: 0.5em;
+}
+
+.comment_avatar {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+}
+
+.new_comment_textarea {
+	margin-bottom: 0.5em;
+	background-color: transparent !important;
+}
+
+.pro_tip {
+	display: flex;
+	align-items: center;
+	color: var(--textMedium);
+	font-size: var(--fzSmallest);
+	font-family: var(--fontFamilyMedium);
+	font-weight: 500;
+	margin-bottom: 1em;
+
+	& strong {
+		padding-right: 4px;
+	}
+
+	& .keyboard {
+		padding-inline: 4px;
+		margin-inline: 4px;
+		color: black;
+		font-weight: 600;
+		background-color: var(--backgroundMedium);
+		font-family: var(--fontFamilyBold);
+	}
+}

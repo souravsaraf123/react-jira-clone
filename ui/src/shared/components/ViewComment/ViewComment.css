@@ -1,0 +1,47 @@
+.view_comment_container {
+	width: 100%;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 1em;
+	align-items: flex-start;
+	margin-bottom: 0.75em;
+}
+
+.comment_avatar {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+}
+
+.name_and_time {
+	display: flex;
+	align-items: baseline;
+	gap: 1em;
+	margin-bottom: 1em;
+}
+
+.comment_user_name {
+	font-size: var(--fzRegular);
+	font-family: var(--fontFamilyMedium);
+	color: var(--textDark);
+	font-weight: 600;
+}
+
+.comment_time {
+	font-size: var(--fzSmall);
+	color: var(--textDark);
+}
+
+.view_comment_body {
+	white-space: pre-line;
+	margin-bottom: 1em;
+
+	&:hover {
+		background-color: var(--backgroundLightest);
+	}
+}
+
+.view_comment_textarea {
+	margin-bottom: 0.5em;
+	background-color: transparent !important;
+}

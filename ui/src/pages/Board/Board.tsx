@@ -435,9 +435,10 @@ export function Board()
 						right: "auto",
 						bottom: "1em",
 						transform: "translateX(-50%)",
-						maxWidth: "60rem",
+						maxWidth: "70rem",
 						width: "90%",
-						padding: "1em 1.5em",
+						padding: "1em 1.5em 2em 1.5em",
+						marginBottom: "1em",
 					},
 				}}
 			>

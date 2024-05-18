@@ -1,9 +1,17 @@
 import "./RichTextEditor.css";
 import 'react-quill/dist/quill.snow.css';
 
-import ReactQuill from 'react-quill';
+import ReactQuill, { ReactQuillProps } from 'react-quill';
 
-export function RichTextEditor(props: { value: string, onChange: (value: string) => void, className?: string, style?: React.CSSProperties })
+export interface RichTextEditorProps extends Partial<ReactQuillProps>
+{
+	value: string;
+	onChange: (value: string) => void;
+	className?: string;
+	style?: React.CSSProperties;
+}
+
+export function RichTextEditor(props: RichTextEditorProps)
 {
 	const toolbarOptions = [
 		['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -23,12 +31,14 @@ export function RichTextEditor(props: { value: string, onChange: (value: string)
 	};
 	return (
 		<ReactQuill
+			placeholder="Description"
 			className={props.className}
 			style={props.style}
 			theme="snow"
 			modules={modules}
 			value={props.value}
 			onChange={props.onChange}
+			{...props}
 		/>
 	);
 }

@@ -11,6 +11,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { DropdownOption } from "../../models/dropdownOption.model";
 import { IssueDetailsHeader } from "../IssueDetailsHeader/IssueDetailsHeader";
+import { IssueDetailsLhs } from "../IssueDetailsLhs/IssueDetailsLhs";
+import { IssueDetailsRhs } from "../IssueDetailsRhs/IssueDetailsRhs";
 import { Spinner } from "../Spinner/Spinner";
 import { User } from "../../models/user.model";
 import _ from "lodash";
@@ -169,18 +171,29 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 
 	let successState = issueDetails && (
 		<div className="issue_details_container">
-			<div className="issue_header">
 
+			{/* Header */}
+			<div className="issue_header">
 				<IssueDetailsHeader
 					issueDetails={issueDetails}
 					updateIssueDetails={updateIssueDetails}
 					deleteIssueById={deleteIssueById}
 					handleCloseModal={handleCloseModal}>
 				</IssueDetailsHeader>
-
 			</div>
+
+			{/* Details Container */}
 			<div className="issue_details">
-				<h1>{issueDetails.title}</h1>
+
+				{/* LHS */}
+				<IssueDetailsLhs
+					issueDetails={issueDetails}
+					setIssueDetails={setIssueDetails}
+					updateIssueDetails={updateIssueDetails}>
+				</IssueDetailsLhs>
+
+				{/* RHS */}
+				<IssueDetailsRhs></IssueDetailsRhs>
 			</div>
 		</div>
 	);
