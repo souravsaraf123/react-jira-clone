@@ -45,3 +45,13 @@
 	margin-bottom: 0.5em;
 	background-color: transparent !important;
 }
+
+.edit_button_style {
+	padding-block: 0 !important;
+	padding-inline: 2px !important;
+	--hoverBackgroundColor: transparent !important;
+
+	&:hover {
+		text-decoration: underline !important;
+	}
+}

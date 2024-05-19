@@ -4,12 +4,11 @@ import "./IssueDetails.css";
 // and add our custom property 'myCustomProp' to it.
 import type { } from 'react-select/base';
 
-import { Issue, IssuePriorityLabel, IssueWithUsersAndComments } from "../../models/issue.model";
+import { Issue, IssueWithUsersAndComments } from "../../models/issue.model";
 import { deleteIssue, getIssue, updateIssue } from "../../services/Issue.service";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { DropdownOption } from "../../models/dropdownOption.model";
 import { IssueDetailsHeader } from "../IssueDetailsHeader/IssueDetailsHeader";
 import { IssueDetailsLhs } from "../IssueDetailsLhs/IssueDetailsLhs";
 import { IssueDetailsRhs } from "../IssueDetailsRhs/IssueDetailsRhs";
@@ -85,6 +84,7 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 			delete updatedIssueWithoutComments.users;
 			let updatedIssues = prop.issues.map((iss) => iss.id === updatedIssueRequest.id ? updatedIssueWithoutComments : iss);
 			prop.setIssues(updatedIssues);
+			return true;
 		}
 		catch (error: any)
 		{
@@ -97,6 +97,7 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 				theme: "colored",
 				data: 'Please check your network connection and try again.'
 			});
+			return false;
 		}
 	}
 
@@ -139,21 +140,6 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 		navigate('/board');
 	};
 
-	// Local Variables
-	let reporterDropdownOptions: DropdownOption[] = prop.users.map((u) =>
-	{
-		return {
-			value: u.id.toString(),
-			label: u.name,
-			imageUrl: u.avatarUrl,
-		};
-	});
-	let assigneeOptions = _.cloneDeep(reporterDropdownOptions);
-	let priorityOptions: DropdownOption[] = Object.entries(IssuePriorityLabel).map(([key, value]) =>
-	{
-		return { value: key, label: value };
-	});
-
 	// JSX
 	let loadingState = (
 		<div className="center_of_body">
@@ -193,7 +179,11 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 				</IssueDetailsLhs>
 
 				{/* RHS */}
-				<IssueDetailsRhs></IssueDetailsRhs>
+				<IssueDetailsRhs
+					issueDetails={issueDetails}
+					users={prop.users}
+					updateIssueDetails={updateIssueDetails}>
+				</IssueDetailsRhs>
 			</div>
 		</div>
 	);

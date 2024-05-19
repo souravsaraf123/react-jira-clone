@@ -87,6 +87,8 @@ export function Comments(props: IssueDetailsLhsProps)
 					comments: [...props.issueDetails.comments, response],
 				});
 			}
+			console.log('Comment updated successfully : ', response);
+			return true;
 		}
 		catch (error: any)
 		{
@@ -98,6 +100,7 @@ export function Comments(props: IssueDetailsLhsProps)
 				type: "error",
 				theme: "colored",
 			});
+			return false;
 		}
 	}
 
@@ -143,9 +146,12 @@ export function Comments(props: IssueDetailsLhsProps)
 										issueId: props.issueDetails.id,
 										userId: loggedInUser.id,
 									};
-									await addUpdateOrDeleteComment(requestBody);
-									setNewComment('');
-									setShowCommentSaveButton(false);
+									let isSuccessful = await addUpdateOrDeleteComment(requestBody);
+									if (isSuccessful)
+									{
+										setNewComment('');
+										setShowCommentSaveButton(false);
+									}
 								}}>
 								Save
 							</Button>

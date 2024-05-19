@@ -24,6 +24,7 @@
 .issue_details {
 	display: grid;
 	grid-template-columns: 7fr 3fr;
-	grid-gap: 1rem;
+	grid-gap: 2rem;
 	overflow-y: auto;
+	scrollbar-gutter: stable;
 }

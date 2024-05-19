@@ -1,0 +1,64 @@
+.rhs_container {
+	padding-right: 1em;
+	width: 100%;
+	display: grid;
+	gap: 1em;
+	justify-items: start;
+	align-items: start;
+	align-content: start;
+	font-family: var(--fontFamilyMedium);
+	font-size: var(--fzMedium);
+}
+
+.field_container {
+	width: 100%;
+	display: grid;
+	justify-items: start;
+	align-items: start;
+	align-content: start;
+	gap: 0.25em;
+}
+
+.rhs_field_label {
+	color: var(--textMedium);
+	font-size: var(--fzSmallest);
+	font-family: var(--fontFamilyBold);
+	text-transform: uppercase;
+}
+
+.issue_type_select.rhs_select {
+	font-size: var(--fzSmall);
+	min-width: auto;
+
+	& .select__single-value {
+		color: hsl(0, 0%, 20%);
+	}
+
+	& .select__indicator {
+		color: hsl(0, 0%, 20%);
+	}
+
+	&.w100 {
+		width: 100%;
+	}
+}
+
+.status_pill {
+	font-size: var(--fzSmallest);
+	padding: 4px 8px;
+	border-radius: 4px;
+}
+
+.divider {
+	width: 100%;
+	height: 1px;
+	background-color: var(--borderLight);
+}
+
+.audit_fields {
+	width: 100%;
+	display: grid;
+	gap: 0.5em;
+	font-size: var(--fzSmallest);
+	color: var(--textMedium);
+}

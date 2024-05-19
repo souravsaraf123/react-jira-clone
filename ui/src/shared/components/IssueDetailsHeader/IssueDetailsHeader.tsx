@@ -40,7 +40,7 @@ export const IssueTypeWithIdSingleValue = ({ children, ...props }: SingleValuePr
 export interface IssueDetailsHeaderProps
 {
 	issueDetails: IssueWithUsersAndComments;
-	updateIssueDetails: (requestBody: Partial<IssueWithUsersAndComments>) => void;
+	updateIssueDetails: (requestBody: Partial<IssueWithUsersAndComments>) => Promise<boolean>;
 	deleteIssueById: () => void;
 	handleCloseModal: () => void;
 }
@@ -77,9 +77,9 @@ export function IssueDetailsHeader(props: IssueDetailsHeaderProps)
 					IndicatorSeparator: () => null,
 				}}
 				hideSelectedOptions={true}
+				isSearchable={false}
 				className="issue_type_select"
 				classNamePrefix="select"
-				isSearchable={false}
 				options={issueTypeOptions}
 				value={issueTypeOptions.find((i) => i.value == issueDetails.type)}
 				onChange={(selected: any) =>

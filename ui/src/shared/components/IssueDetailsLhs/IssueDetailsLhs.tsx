@@ -12,7 +12,7 @@ interface IssueDetailsLhsProps
 {
 	issueDetails: IssueWithUsersAndComments;
 	setIssueDetails: React.Dispatch<React.SetStateAction<IssueWithUsersAndComments>>;
-	updateIssueDetails: (requestBody: Partial<IssueWithUsersAndComments>) => void;
+	updateIssueDetails: (requestBody: Partial<IssueWithUsersAndComments>) => Promise<boolean>;
 }
 
 export function IssueDetailsLhs(props: IssueDetailsLhsProps)

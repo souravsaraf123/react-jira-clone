@@ -15,7 +15,7 @@ interface ViewCommentProps
 {
 	issueDetails: IssueWithUsersAndComments;
 	setIssueDetails: React.Dispatch<React.SetStateAction<IssueWithUsersAndComments>>;
-	addUpdateOrDeleteComment: (userComment: Partial<UserComment>) => Promise<void>;
+	addUpdateOrDeleteComment: (userComment: Partial<UserComment>) => Promise<boolean>;
 	userComment: UserComment;
 }
 
@@ -72,7 +72,11 @@ export function ViewComment(props: ViewCommentProps)
 							id: props.userComment.id,
 							body: commentBody,
 						};
-						await props.addUpdateOrDeleteComment(requestBody);
+						let isSuccessful = await props.addUpdateOrDeleteComment(requestBody);
+						if (!isSuccessful)
+						{
+							setCommentBody(props.userComment.body);
+						}
 						setIsEditing(false);
 					}}>
 					Save
@@ -114,7 +118,7 @@ export function ViewComment(props: ViewCommentProps)
 					palette={ButtonPalette.primary}
 					filled={ButtonFilled.link}
 					size={ButtonSize.small}
-					style={{ paddingBlock: '0 !important', paddingInline: '2px !important' }}
+					className="edit_button_style"
 					onClick={() =>
 					{
 						setIsEditing(true);
@@ -128,7 +132,7 @@ export function ViewComment(props: ViewCommentProps)
 					filled={ButtonFilled.link}
 					palette={ButtonPalette.danger}
 					size={ButtonSize.small}
-					style={{ paddingBlock: '0 !important', paddingInline: '2px !important' }}
+					className="edit_button_style"
 					onClick={async () =>
 					{
 						setDeleteCommentModalIsOpen(true);
