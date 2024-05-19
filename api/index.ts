@@ -1,16 +1,16 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 
-import { attachPrivateRoutes, attachPublicRoutes } from './routes';
+import { attachPrivateRoutes, attachPublicRoutes } from './src/routes';
 
-import { RouteNotFoundError } from './errors/index';
-import { addRespondToResponse } from './middleware/response';
-import { authenticateUser } from './middleware/authentication';
+import { RouteNotFoundError } from './src/errors/index';
+import { addRespondToResponse } from './src/middleware/response';
+import { authenticateUser } from './src/middleware/authentication';
 import cors from 'cors';
-import createDatabaseConnection from './database/createConnection';
+import createDatabaseConnection from './src/database/createConnection';
 import express from 'express';
-import { handleError } from './middleware/errors';
-import requestLoggerMiddleware from './middleware/requestLogger';
+import { handleError } from './src/middleware/errors';
+import requestLoggerMiddleware from './src/middleware/requestLogger';
 
 const establishDatabaseConnection = async (): Promise<void> =>
 {
