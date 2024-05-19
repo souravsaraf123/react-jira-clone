@@ -58,6 +58,11 @@ export const create = catchErrors(async (req, res: any) =>
 
 export const update = catchErrors(async (req, res: any) =>
 {
+	let issueRequest: Partial<Issue> = req.body;
+	if ('status' in issueRequest)
+	{
+		issueRequest.listPosition = await calculateListPosition(issueRequest);
+	}
 	const issue = await updateEntity(Issue, req.params.issueId, req.body);
 	res.respond(issue);
 });

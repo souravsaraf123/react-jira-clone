@@ -40,14 +40,14 @@ export function Sidebar()
 			{/* Home */}
 			<Button
 				{...props}
-				onClick={() => alert("Home")}>
+				onClick={() => navigate('/')}>
 				<SVG src={homeIcon} height={32} width={32} />
 			</Button>
 
 			{/* Search */}
 			<Button
 				{...props}
-				onClick={() => alert("Search")}>
+				onClick={() => alert("Search not implemented")}>
 				<SVG src={searchIcon} height={height} width={width} />
 				<span>SEARCH ISSUES</span>
 			</Button>

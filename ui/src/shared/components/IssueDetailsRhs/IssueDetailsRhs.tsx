@@ -102,7 +102,7 @@ export function IssueDetailsRhs(prop: IssueDetailsRhsProps)
 	return (
 		<div className="rhs_container">
 
-			{/* statusOptions */}
+			{/* status */}
 			<div className="field_container">
 				<p className="rhs_field_label">Status</p>
 				<Select
@@ -123,6 +123,7 @@ export function IssueDetailsRhs(prop: IssueDetailsRhsProps)
 					{
 						let selectedOption = selected as DropdownOption;
 						let requestBody: Partial<IssueWithUsersAndComments> = {
+							projectId: prop.issueDetails.projectId,
 							status: selectedOption?.value as IssueStatus,
 						};
 						prop.updateIssueDetails(requestBody);
