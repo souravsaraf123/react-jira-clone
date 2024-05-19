@@ -4,11 +4,6 @@ import { Constants } from "../Constants";
 import axios from "axios";
 import { handleApiError } from "../utils";
 
-function delay(ms: number)
-{
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export async function updateIssues(token: string, issues: Partial<Issue>[])
 {
 	console.log('Update multiple issues request : ', issues);
