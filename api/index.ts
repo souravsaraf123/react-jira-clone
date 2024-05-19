@@ -36,6 +36,7 @@ const initializeExpress = (): void =>
 	app.use(requestLoggerMiddleware);
 
 	app.use(addRespondToResponse);
+	app.get('/api', (_req: any, res: any) => res.respond('Hello From SS Jira Api'));
 
 	attachPublicRoutes(app);
 
