@@ -80,7 +80,7 @@ export interface IssueDetailsRhsProps
 export function IssueDetailsRhs(prop: IssueDetailsRhsProps)
 {
 	// state
-	let [estimate, setEstimate] = useState(prop.issueDetails.estimate);
+	let [estimate, setEstimate] = useState(prop.issueDetails.estimate || 0);
 
 	// Local Variables
 	let reporterOptions: DropdownOption[] = prop.users.map((u) =>
