@@ -9,7 +9,7 @@
 			"es2019",
 			"esnext.asynciterable"
 		],
-		"sourceMap": true,
+		"sourceMap": false,
 		"outDir": "./dist",
 		"removeComments": true,
 		"strict": true,

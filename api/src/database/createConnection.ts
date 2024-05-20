@@ -2,8 +2,9 @@ import * as entities from './../entities/index';
 
 import { Connection, createConnection } from 'typeorm';
 
-const createDatabaseConnection = (): Promise<Connection> =>
-{
+import crypto from 'crypto';
+
+const createDatabaseConnection = (): Promise<Connection> => {
 	console.log('process.env.DB_DATABASE : ', process.env.DB_DATABASE);
 	return createConnection({
 		type: 'postgres',
@@ -15,6 +16,7 @@ const createDatabaseConnection = (): Promise<Connection> =>
 		schema: process.env.DB_SCHEMA,
 		entities: Object.values(entities),
 		synchronize: false,
+		name: crypto.randomUUID(),
 	});
 };
 

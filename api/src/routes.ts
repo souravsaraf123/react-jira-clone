@@ -14,6 +14,7 @@ export const attachPublicRoutes = (app: any): void =>
 	}
 
 	app.post('/seedData', authentication.createGuestAccount);
+	app.get('/api', (_req: any, res: any) => { res.send('Hello From SS Jira Api'); });
 };
 
 export const attachPrivateRoutes = (app: any): void =>

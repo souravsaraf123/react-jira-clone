@@ -5,9 +5,9 @@
 	"license": "MIT",
 	"scripts": {
 		"compile": "rimraf dist && tsc --project tsconfig.json && rimraf dist",
-		"start": "nodemon --exec node -r ts-node/register --env-file=.env index.ts",
+		"start": "nodemon --exec node -r ts-node/register --env-file=.env src/local.ts",
 		"start:test": "cross-env NODE_ENV='test' DB_DATABASE='jira_test' npm start",
-		"build": "tsc",
+		"deploy": "./vercelDeploy.sh",
 		"dbSync": "node -r ts-node/register --env-file=.env src/dbSync.ts"
 	},
 	"devDependencies": {
