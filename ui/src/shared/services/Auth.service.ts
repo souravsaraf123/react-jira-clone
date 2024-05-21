@@ -1,4 +1,3 @@
-import { Constants } from "../Constants";
 import { LoginResponse } from "../models/user.model";
 import axios from "axios";
 import { handleApiError } from "../utils";
@@ -7,7 +6,7 @@ export async function seedData()
 {
 	try
 	{
-		let response = await axios.post<LoginResponse>(`${Constants.API_URL}/seedData`, {}, {
+		let response = await axios.post<LoginResponse>(`${import.meta.env.VITE_API_URL}/seedData`, {}, {
 			headers: {
 				"Content-Type": "application/json"
 			}

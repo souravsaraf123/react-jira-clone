@@ -1,6 +1,5 @@
 import { Project, ProjectDetails } from '../models/project.model';
 
-import { Constants } from '../Constants';
 import axios from 'axios';
 import { handleApiError } from '../utils';
 
@@ -8,7 +7,7 @@ export async function getProjectDetails(token: string)
 {
 	try
 	{
-		let response = await axios.get(`${Constants.API_URL}/project`, {
+		let response = await axios.get(`${import.meta.env.VITE_API_URL}/project`, {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${token}`,
@@ -35,7 +34,7 @@ export async function updateProject(token: string, project: Project)
 {
 	try
 	{
-		let response = await axios.put(`${Constants.API_URL}/project`, project, {
+		let response = await axios.put(`${import.meta.env.VITE_API_URL}/project`, project, {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${token}`,

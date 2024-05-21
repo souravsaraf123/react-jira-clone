@@ -111,7 +111,7 @@ export function IssueDetailsHeader(props: IssueDetailsHeaderProps)
 					size={ButtonSize.small}
 					onClick={() => setIsPopoverOpen(!isPopoverOpen)}
 					style={{ color: 'var(--textDark)', marginLeft: 'auto', }}>
-					<SVG src={"/src/assets/images/send.svg"} height={20} width={20} />
+					<SVG src={"/images/send.svg"} height={20} width={20} />
 					Give feedback
 				</Button>
 			</Popover>
@@ -124,7 +124,7 @@ export function IssueDetailsHeader(props: IssueDetailsHeaderProps)
 				size={ButtonSize.small}
 				style={{ color: 'var(--textDark)' }}
 				onClick={copyLink}>
-				<SVG src={"/src/assets/images/link.svg"} height={20} width={20} />
+				<SVG src={"/images/link.svg"} height={20} width={20} />
 				{copyLinkText}
 			</Button>
 
@@ -135,7 +135,7 @@ export function IssueDetailsHeader(props: IssueDetailsHeaderProps)
 				palette={ButtonPalette.ghost}
 				size={ButtonSize.small}
 				onClick={() => setIssueDeleteModalIsOpen(true)}>
-				<SVG src={"/src/assets/images/delete.svg"} height={20} width={20} />
+				<SVG src={"/images/delete.svg"} height={20} width={20} />
 			</Button>
 
 			{/* Confirm Delete Modal */}
@@ -175,7 +175,7 @@ export function IssueDetailsHeader(props: IssueDetailsHeaderProps)
 				palette={ButtonPalette.ghost}
 				size={ButtonSize.small}
 				onClick={handleCloseModal}>
-				<SVG src={"/src/assets/images/close.svg"} height={24} width={24} />
+				<SVG src={"/images/close.svg"} height={24} width={24} />
 			</Button>
 		</>
 	);

@@ -1,5 +1,5 @@
 import "react-toastify/dist/ReactToastify.css";
-import './assets/styles/toastify.css';
+import './styles/toastify.css';
 
 import { Project, ProjectDetails } from "./shared/models/project.model";
 import { useEffect, useRef, useState } from "react";

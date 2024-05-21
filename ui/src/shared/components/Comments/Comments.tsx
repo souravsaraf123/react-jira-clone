@@ -36,7 +36,7 @@ export function Comments(props: IssueDetailsLhsProps)
 
 	// local variables
 	let loggedInUser: User = JSON.parse(localStorage.getItem('user') || '{}');
-	let focusNewComment: any = (event: KeyboardEvent) =>
+	let focusNewComment = (event: KeyboardEvent) =>
 	{
 		// if the user presses the 'm' key
 		if (

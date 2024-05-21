@@ -15,10 +15,10 @@ export function Sidebar()
 	// Route Navigation Hook
 	let navigate = useNavigate();
 
-	let homeIcon = "/src/assets/images/jira_light.svg";
-	let searchIcon = "/src/assets/images/search.svg";
-	let plusIcon = "/src/assets/images/plus.svg";
-	let helpIcon = "/src/assets/images/help.svg";
+	let homeIcon = "/images/jira_light.svg";
+	let searchIcon = "/images/search.svg";
+	let plusIcon = "/images/plus.svg";
+	let helpIcon = "/images/help.svg";
 
 	let height = 28;
 	let width = 28;

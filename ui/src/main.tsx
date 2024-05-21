@@ -1,7 +1,7 @@
-import './assets/styles/fonts.css';
-import './assets/styles/variables.css';
-import './assets/styles/reset.css';
-import './assets/styles/index.css';
+import "./styles/fonts.css"
+import './styles/variables.css';
+import './styles/reset.css';
+import './styles/index.css';
 
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 

@@ -1,6 +1,5 @@
 import { Issue, IssueWithUsersAndComments } from "../models/issue.model";
 
-import { Constants } from "../Constants";
 import axios from "axios";
 import { handleApiError } from "../utils";
 
@@ -9,7 +8,7 @@ export async function updateIssues(token: string, issues: Partial<Issue>[])
 	console.log('Update multiple issues request : ', issues);
 	try
 	{
-		let response = await axios.put(`${Constants.API_URL}/issues`, issues, {
+		let response = await axios.put(`${import.meta.env.VITE_API_URL}/issues`, issues, {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${token}`,
@@ -28,7 +27,7 @@ export async function createIssue(token: string, issue: Partial<Issue>)
 	console.log('Create issue request : ', issue);
 	try
 	{
-		let response = await axios.post(`${Constants.API_URL}/issues`, issue, {
+		let response = await axios.post(`${import.meta.env.VITE_API_URL}/issues`, issue, {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${token}`,
@@ -48,7 +47,7 @@ export async function getIssue(token: string, issueId: number): Promise<IssueWit
 	console.log('Get issue by id request : ', issueId);
 	try
 	{
-		let response = await axios.get(`${Constants.API_URL}/issues/${issueId}`, {
+		let response = await axios.get(`${import.meta.env.VITE_API_URL}/issues/${issueId}`, {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${token}`,
@@ -68,7 +67,7 @@ export async function updateIssue(token: string, issueId: number, issue: Partial
 	console.log('Updating issue request : ', issueId, issue);
 	try
 	{
-		let response = await axios.put(`${Constants.API_URL}/issues/${issueId}`, issue, {
+		let response = await axios.put(`${import.meta.env.VITE_API_URL}/issues/${issueId}`, issue, {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${token}`,
@@ -89,7 +88,7 @@ export async function deleteIssue(token: string, issueId: number)
 	console.log('Delete issue request : ', issueId);
 	try
 	{
-		let response = await axios.delete(`${Constants.API_URL}/issues/${issueId}`, {
+		let response = await axios.delete(`${import.meta.env.VITE_API_URL}/issues/${issueId}`, {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${token}`,

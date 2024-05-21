@@ -1,24 +1,24 @@
 @font-face {
 	font-family: "CircularStdBlack";
-	src: url("src/assets/fonts/CircularStd-Black.woff2") format("woff2");
+	src: url("/fonts/CircularStd-Black.woff2") format("woff2");
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: "CircularStdBold";
-	src: url("src/assets/fonts/CircularStd-Bold.woff2") format("woff2");
+	src: url("/fonts/CircularStd-Bold.woff2") format("woff2");
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: "CircularStdMedium";
-	src: url("src/assets/fonts/CircularStd-Medium.woff2") format("woff2");
+	src: url("/fonts/CircularStd-Medium.woff2") format("woff2");
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: "CircularStdBook";
-	src: url("src/assets/fonts/CircularStd-Book.woff2") format("woff2");
+	src: url("/fonts/CircularStd-Book.woff2") format("woff2");
 	font-weight: normal;
 	font-style: normal;
 }

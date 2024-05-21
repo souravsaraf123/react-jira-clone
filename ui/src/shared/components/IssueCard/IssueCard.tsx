@@ -13,16 +13,16 @@ export function getIssueTypeIcon(issueType: IssueType)
 	switch (issueType)
 	{
 		case IssueType.bug:
-			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/src/assets/images/bug.svg"></SVG>;
+			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/images/bug.svg"></SVG>;
 			break;
 		case IssueType.story:
-			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/src/assets/images/story.svg"></SVG>;
+			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/images/story.svg"></SVG>;
 			break;
 		case IssueType.task:
-			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/src/assets/images/task.svg"></SVG>;
+			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/images/task.svg"></SVG>;
 			break;
 		default:
-			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/src/assets/images/task.svg"></SVG>;
+			icon = <SVG title={issueType} height={"20px"} width={"20px"} src="/images/task.svg"></SVG>;
 			break;
 	}
 	return icon;
@@ -34,22 +34,22 @@ export function getIssuePriorityIcon(priority: IssuePriority)
 	switch (priority)
 	{
 		case IssuePriority.lowest:
-			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--success)" style={{ rotate: "180deg" }} height={"20px"} width={"20px"} src="/src/assets/images/highest.svg"></SVG>;
+			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--success)" style={{ rotate: "180deg" }} height={"20px"} width={"20px"} src="/images/highest.svg"></SVG>;
 			break;
 		case IssuePriority.low:
-			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--success)" style={{ rotate: "180deg" }} height={"20px"} width={"20px"} src="/src/assets/images/high.svg"></SVG>;
+			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--success)" style={{ rotate: "180deg" }} height={"20px"} width={"20px"} src="/images/high.svg"></SVG>;
 			break;
 		case IssuePriority.medium:
-			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--warning)" height={"20px"} width={"20px"} src="/src/assets/images/high.svg"></SVG>;
+			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--warning)" height={"20px"} width={"20px"} src="/images/high.svg"></SVG>;
 			break;
 		case IssuePriority.high:
-			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--danger)" height={"20px"} width={"20px"} src="/src/assets/images/high.svg"></SVG>;
+			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--danger)" height={"20px"} width={"20px"} src="/images/high.svg"></SVG>;
 			break;
 		case IssuePriority.highest:
-			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--danger)" height={"20px"} width={"20px"} src="/src/assets/images/highest.svg"></SVG>;
+			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--danger)" height={"20px"} width={"20px"} src="/images/highest.svg"></SVG>;
 			break;
 		default:
-			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--warning)" height={"20px"} width={"20px"} src="/src/assets/images/high.svg"></SVG>;
+			icon = <SVG title={'Priority : ' + IssuePriorityLabel[priority]} color="var(--warning)" height={"20px"} width={"20px"} src="/images/high.svg"></SVG>;
 			break;
 	}
 	return icon;

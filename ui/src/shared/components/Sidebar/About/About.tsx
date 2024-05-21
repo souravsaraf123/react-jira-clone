@@ -1,13 +1,12 @@
 import "./About.css";
 
 import { GithubLink } from "../../GithubLink/GithubLink";
-import SVG from 'react-inlinesvg';
 
 export function About()
 {
 	return (
 		<div className="about">
-			<img style={{ marginInline: "auto" }} src="/src/assets/images/feedback.png" width={140} />
+			<img style={{ marginInline: "auto" }} src="/images/feedback.png" width={140} />
 			<p>
 				This simplified Jira clone is built with React on the front-end and Node/TypeScript on the back-end.
 			</p>
