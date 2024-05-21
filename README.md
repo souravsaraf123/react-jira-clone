@@ -6,7 +6,11 @@
   <a href="https://github.com/souravsaraf123/react-jira-clone/tree/master/api">View API</a>
 </h3>
 
-![Tech logos](https://i.ibb.co/DVFj8PL/tech-icons.jpg)
+<div align="center" style="padding-block: 16px;">
+  <img src="https://github.com/souravsaraf123/react-jira-clone/assets/40688353/6815111a-04d2-48e3-9c84-df3bc79209d0" height="200px" width="auto" />
+</div>
+
+## App Screenshot
 
 ![App screenshot](https://github.com/souravsaraf123/react-jira-clone/assets/40688353/2c36b3ea-ccaa-438e-ae7b-b6e5c1eadecf)
 
@@ -16,8 +20,7 @@
 - Written in modern React, only functional components with hooks
 - A variety of custom light-weight UI components such as datepicker, modal, various form elements etc
 - Simple local React state management, without redux, mobx, or similar
-- Custom webpack setup, without create-react-app or similar
-- Client written in Babel powered JavaScript
+- Client side rendered Single Page Application (SPA) powered by Vite and react-router.
 - API written in TypeScript and using TypeORM
 
 ## Contributing
