@@ -1,10 +1,11 @@
+import { Request, Response } from 'express';
 import { findEntityOrThrow, updateEntity } from './../utils/typeorm';
 
 import { Project } from './../entities/index';
 import { catchErrors } from './../errors/index';
 import { issuePartial } from './../serializers/issues';
 
-export const getProjectWithUsersAndIssues = catchErrors(async (req: any, res: any) =>
+export const getProjectWithUsersAndIssues = catchErrors(async (req: Request, res: Response) =>
 {
 	const project = await findEntityOrThrow(Project, req.currentUser.projectId, {
 		relations: ['users', 'issues'],
@@ -17,7 +18,7 @@ export const getProjectWithUsersAndIssues = catchErrors(async (req: any, res: an
 	});
 });
 
-export const update = catchErrors(async (req: any, res: any) =>
+export const update = catchErrors(async (req: Request, res: Response) =>
 {
 	const project = await updateEntity(Project, req.currentUser.projectId, req.body);
 	res.respond({ project });

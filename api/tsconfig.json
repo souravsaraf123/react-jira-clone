@@ -31,9 +31,6 @@
 				"./*"
 			]
 		},
-		"types": [
-			"node"
-		],
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
@@ -46,6 +43,9 @@
 	"include": [
 		"./src/**/*.ts",
 		"index.ts",
-		"src/index.ts"
-	]
+		"src/index.ts",
+	],
+	"ts-node": {
+		"files": true
+	},
 }

@@ -1,11 +1,12 @@
+import { Request, Response } from 'express';
 import { createEntity, deleteEntity, findEntityOrThrow, updateEntity } from './../utils/typeorm';
 
+import { Connection } from 'typeorm';
 import { Issue } from './../entities/index';
 import { IssueStatus } from './../constants/issues';
 import { catchErrors } from './../errors/index';
-import { getConnection } from 'typeorm';
 
-export const getProjectIssues = catchErrors(async (req: any, res: any) =>
+export const getProjectIssues = catchErrors(async (req: Request, res: Response) =>
 {
 	const { projectId } = req.currentUser;
 	const { searchTerm } = req.query;
@@ -25,7 +26,7 @@ export const getProjectIssues = catchErrors(async (req: any, res: any) =>
 	res.respond({ issues });
 });
 
-export const getIssueWithUsersAndComments = catchErrors(async (req, res: any) =>
+export const getIssueWithUsersAndComments = catchErrors(async (req: Request, res: Response) =>
 {
 	const issue = await findEntityOrThrow(Issue, req.params.issueId, {
 		relations: ['users', 'comments', 'comments.user'],
@@ -33,7 +34,7 @@ export const getIssueWithUsersAndComments = catchErrors(async (req, res: any) =>
 	res.respond(issue);
 });
 
-export const create = catchErrors(async (req, res: any) =>
+export const create = catchErrors(async (req: Request, res: Response) =>
 {
 	console.log('Create Issue Request : ', req.body);
 	let createIssueRequest: Partial<Issue> = req.body;
@@ -46,7 +47,8 @@ export const create = catchErrors(async (req, res: any) =>
 
 	for (let userId of createIssueRequest.userIds)
 	{
-		await getConnection().createQueryBuilder().insert().into('issue_user').values({
+		let conn = req.dbConnection as Connection;
+		await conn.createQueryBuilder().insert().into('issue_user').values({
 			issueId: issueCreated.id,
 			userId: userId,
 		}).execute();
@@ -56,7 +58,7 @@ export const create = catchErrors(async (req, res: any) =>
 	res.respond(issueCreated);
 });
 
-export const update = catchErrors(async (req, res: any) =>
+export const update = catchErrors(async (req: Request, res: Response) =>
 {
 	let issueRequest: Partial<Issue> = req.body;
 	if ('status' in issueRequest)
@@ -67,11 +69,12 @@ export const update = catchErrors(async (req, res: any) =>
 	res.respond(issue);
 });
 
-export const updateMultiple = catchErrors(async (req, res: any) =>
+export const updateMultiple = catchErrors(async (req: Request, res: Response) =>
 {
 	console.log('Updating multiple issues');
 	let issuesToUpdate: Partial<Issue>[] = req.body;
-	let qr = getConnection().createQueryRunner();
+	let conn = req.dbConnection as Connection;
+	let qr = conn.createQueryRunner();
 	qr.startTransaction();
 	try
 	{
@@ -89,7 +92,7 @@ export const updateMultiple = catchErrors(async (req, res: any) =>
 	}
 });
 
-export const remove = catchErrors(async (req, res: any) =>
+export const remove = catchErrors(async (req: Request, res: Response) =>
 {
 	const issue = await deleteEntity(Issue, req.params.issueId);
 	res.respond({ issue });

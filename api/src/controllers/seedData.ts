@@ -1,11 +1,14 @@
+import { Request, Response } from 'express';
+
 import { GUEST_EMAIL } from '../constants/user';
 import User from '../entities/User';
 import { catchErrors } from '../errors';
 import createAccount from '../database/createGuestAccount';
 import { signToken } from '../utils/authToken';
 
-export const createGuestAccount = catchErrors(async (_req: any, res: any) =>
+export const createGuestAccount = catchErrors(async (req: Request, res: Response) =>
 {
+	console.log(process.env.DB_DATABASE);
 	// Check if guest user already exists
 	const guestUser = await User.findOne({
 		where: { email: GUEST_EMAIL },

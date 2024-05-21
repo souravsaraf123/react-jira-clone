@@ -1,10 +1,10 @@
 import { InvalidTokenError, catchErrors } from './../errors/index';
+import { NextFunction, Request, Response } from 'express';
 
-import { Request } from 'express';
 import { User } from './../entities/index';
 import { verifyToken } from './../utils/authToken';
 
-export const authenticateUser = catchErrors(async (req: any, _res, next) =>
+export const authenticateUser = catchErrors(async (req: Request, res: Response, next: NextFunction) =>
 {
 	console.log('Authenticating user');
 
