@@ -5,20 +5,17 @@ import * as projects from './controllers/projects';
 import * as test from './controllers/test';
 import * as users from './controllers/users';
 
-export const attachPublicRoutes = (app: any): void =>
-{
-	if (process.env.NODE_ENV === 'test')
-	{
+export const attachPublicRoutes = (app: any): void => {
+	if (process.env.NODE_ENV === 'test') {
 		app.delete('/test/reset-database', test.resetDatabase);
 		app.post('/test/create-account', test.createAccount);
 	}
 
 	app.post('/seedData', authentication.createGuestAccount);
-	app.get('/api', (_req: any, res: any) => { res.send('Hello From SS Jira Api'); });
+	app.get('/api', (_req: any, res: any) => { res.send('Hello From SS Jira Api updated'); });
 };
 
-export const attachPrivateRoutes = (app: any): void =>
-{
+export const attachPrivateRoutes = (app: any): void => {
 	app.post('/comments', comments.create);
 	app.put('/comments/:commentId', comments.update);
 	app.delete('/comments/:commentId', comments.remove);
