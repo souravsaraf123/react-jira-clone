@@ -134,4 +134,3 @@ local.env
 prod.env
 .vercel
 public
-api
