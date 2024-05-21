@@ -5,5 +5,13 @@
 			"source": "/(.*)",
 			"destination": "/api"
 		}
-	]
+	],
+	"regions": [
+		"bom1"
+	],
+	"functions": {
+		"api/index.ts": {
+			"maxDuration": 60
+		}
+	}
 }

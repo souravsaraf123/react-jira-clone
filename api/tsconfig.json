@@ -45,6 +45,7 @@
 	],
 	"include": [
 		"./src/**/*.ts",
-		"index.ts"
+		"index.ts",
+		"src/index.ts"
 	]
 }
