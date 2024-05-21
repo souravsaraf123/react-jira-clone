@@ -82,7 +82,8 @@ export function IssueDetails(prop: { users: User[], issues: Issue[], setIssues: 
 			let updatedIssueWithoutComments = _.cloneDeep(updatedIssueDetailsWithComments);
 			delete updatedIssueWithoutComments.comments;
 			delete updatedIssueWithoutComments.users;
-			let updatedIssues = prop.issues.map((iss) => iss.id === updatedIssueRequest.id ? updatedIssueWithoutComments : iss);
+			let updatedIssues = prop.issues.map((iss) => iss.id === issueDetails.id ? updatedIssueWithoutComments : iss);
+			console.log('Updated issues after modification from details page : ', updatedIssues);
 			prop.setIssues(updatedIssues);
 			return true;
 		}
