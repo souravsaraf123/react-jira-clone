@@ -16,13 +16,14 @@ export const attachPublicRoutes = (app: Express): void =>
 	}
 
 	app.get('/cronJob', authentication.createGuestAccount);
+	app.post('/seedData', authentication.createGuestAccount);
 	app.get('/api', (req: Request, res: Response) =>
 	{
 		process.argv.forEach((val, index) =>
 		{
 			console.log(`${index}: ${val}`);
 		});
-		res.send('Hello From SS Jira Api updated');
+		res.send('Hello From SS Jira Api');
 	});
 };
 
